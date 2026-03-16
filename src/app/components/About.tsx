@@ -104,18 +104,6 @@ export function About() {
               />
             </motion.div>
           </div>
-
-          <motion.div
-            className="mt-16 flex gap-12 md:gap-20"
-            style={{
-              opacity: useTransform(scrollYProgress, [0.55, 0.7], [0, 1]),
-              y: useTransform(scrollYProgress, [0.55, 0.7], [30, 0]),
-            }}
-          >
-            <Stat number="5+" label="Years Experience" />
-            <Stat number="50+" label="Projects Built" />
-            <Stat number="20+" label="Happy Clients" />
-          </motion.div>
         </div>
       </div>
     </section>
@@ -145,15 +133,3 @@ function Word({
   );
 }
 
-function Stat({ number, label }: { number: string; label: string }) {
-  return (
-    <div>
-      <div className="text-3xl md:text-4xl text-white/90 font-[Space_Grotesk] tracking-tight">
-        {number}
-      </div>
-      <div className="text-cyan-400/40 text-xs tracking-[0.2em] uppercase mt-1 font-[Space_Grotesk]">
-        {label}
-      </div>
-    </div>
-  );
-}

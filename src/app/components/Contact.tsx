@@ -2,6 +2,7 @@ import { motion, useScroll, useTransform } from "motion/react";
 import { useRef } from "react";
 import { Github, Linkedin, Twitter, Code, Mail, Download, ArrowUpRight } from "lucide-react";
 import Magnet from "./Magnet";
+import { ContactTitleRope } from "./ContactTitleRope";
 
 const socialLinks = [
   {
@@ -42,7 +43,7 @@ export function Contact() {
 
   return (
     <section ref={containerRef} className="relative min-h-[150vh] bg-black">
-      <div className="sticky top-0 h-screen flex flex-col items-center justify-center overflow-hidden">
+      <div className="sticky top-0 h-screen flex flex-col items-center justify-center overflow-visible">
         {/* BG effects */}
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_rgba(0,200,255,0.08)_0%,_transparent_70%)]" />
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_bottom_left,_rgba(100,50,255,0.06)_0%,_transparent_50%)]" />
@@ -76,13 +77,9 @@ export function Contact() {
               08 / Contact
             </span>
 
-            <h2 className="text-5xl md:text-7xl lg:text-8xl text-white/90 font-[Space_Grotesk] tracking-tight mb-6">
-              Let's work
-              <br />
-              <span className="bg-gradient-to-r from-cyan-400 via-blue-400 to-purple-500 bg-clip-text text-transparent">
-                together
-              </span>
-            </h2>
+            <div className="flex justify-center">
+              <ContactTitleRope containerRef={containerRef} />
+            </div>
           </motion.div>
 
           <motion.div
