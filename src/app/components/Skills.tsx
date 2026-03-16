@@ -1,311 +1,319 @@
-import { motion, useScroll, useTransform, useMotionValueEvent } from "motion/react";
-import { useRef, useEffect, useState, useCallback } from "react";
+import {
+  motion,
+  useMotionValueEvent,
+  useScroll,
+  useTransform,
+  useSpring,
+} from "motion/react";
+import { useEffect, useRef, useState } from "react";
 
 const skillGroups = [
   {
-    name: "Programming",
+    name: "Core",
     color: "#00c8ff",
-    skills: ["Python", "JavaScript", "TypeScript", "Java", "C++", "Go"],
+    skills: [
+      "Data Structures & Algorithms",
+      "Object-Oriented Programming",
+      "Operating Systems",
+    ],
   },
   {
-    name: "Frameworks",
+    name: "Languages",
     color: "#a855f7",
-    skills: ["React", "Next.js", "Node.js", "Django", "FastAPI", "Express"],
+    skills: ["C", "Java", "Python", "JavaScript"],
   },
   {
-    name: "Tools",
+    name: "Frontend & Backend",
     color: "#22d3ee",
-    skills: ["Git", "Docker", "AWS", "Linux", "CI/CD", "PostgreSQL"],
+    skills: [
+      "NodeJS",
+      "ExpressJS",
+      "ReactJS",
+      "NextJS",
+      "REST API",
+      "Tailwind CSS",
+      "FastAPI",
+    ],
   },
   {
-    name: "AI / Data",
+    name: "Tools & Platforms",
     color: "#f472b6",
-    skills: ["PyTorch", "TensorFlow", "NLP", "Computer Vision", "MLOps", "Pandas"],
+    skills: ["Git", "GitHub", "Docker", "Google Colab", "AWS", "Postman", "Jenkins"],
+  },
+  {
+    name: "Databases",
+    color: "#fbbf24",
+    skills: ["MySQL", "MongoDB", "PostgreSQL"],
   },
 ];
 
-interface Node {
-  x: number;
-  y: number;
-  baseX: number;
-  baseY: number;
-  label: string;
-  group: number;
-  radius: number;
-}
+const TOTAL = skillGroups.length;
+const LABEL_SPREAD_DEG = 30;
 
-function hexToRgb(hex: string): [number, number, number] {
-  const r = parseInt(hex.slice(1, 3), 16);
-  const g = parseInt(hex.slice(3, 5), 16);
-  const b = parseInt(hex.slice(5, 7), 16);
-  return [r, g, b];
-}
+const ARC_R = 520;
+const ARC_CX = 600;
+const ARC_CY = 850;
 
-function generateConstellation(
-  w: number,
-  h: number
-): { nodes: Node[]; connections: [number, number][] } {
-  const nodes: Node[] = [];
-  const cx = w / 2;
-  const cy = h / 2;
-  const spread = Math.min(w, h) * 0.38;
+const toRad = (deg: number) => (deg * Math.PI) / 180;
 
-  skillGroups.forEach((group, gi) => {
-    const groupAngle = (gi / skillGroups.length) * Math.PI * 2 - Math.PI / 2;
-    const groupCx = cx + Math.cos(groupAngle) * spread;
-    const groupCy = cy + Math.sin(groupAngle) * spread;
-
-    group.skills.forEach((skill, si) => {
-      const angle = (si / group.skills.length) * Math.PI * 2 + gi * 0.5;
-      const r = 70 + Math.random() * 60;
-      const x = groupCx + Math.cos(angle) * r;
-      const y = groupCy + Math.sin(angle) * r;
-      nodes.push({
-        x,
-        y,
-        baseX: x,
-        baseY: y,
-        label: skill,
-        group: gi,
-        radius: 4 + Math.random() * 3,
-      });
-    });
-  });
-
-  const connections: [number, number][] = [];
-  for (let i = 0; i < nodes.length; i++) {
-    for (let j = i + 1; j < nodes.length; j++) {
-      const dx = nodes[i].baseX - nodes[j].baseX;
-      const dy = nodes[i].baseY - nodes[j].baseY;
-      const dist = Math.sqrt(dx * dx + dy * dy);
-      if (nodes[i].group === nodes[j].group && dist < 200) {
-        connections.push([i, j]);
-      } else if (nodes[i].group !== nodes[j].group && dist < 250 && Math.random() < 0.12) {
-        connections.push([i, j]);
-      }
-    }
-  }
-
-  return { nodes, connections };
-}
-
-function useConstellationCanvas(
-  canvasRef: React.RefObject<HTMLCanvasElement | null>,
-  scrollProgress: { get: () => number }
-) {
-  const data = useRef<{ nodes: Node[]; connections: [number, number][] } | null>(null);
-  const animId = useRef(0);
-  const time = useRef(0);
-
-  const init = useCallback((canvas: HTMLCanvasElement) => {
-    data.current = generateConstellation(canvas.offsetWidth, canvas.offsetHeight);
-  }, []);
+function ArcDot({
+  angleDeg,
+  isActive,
+}: {
+  angleDeg: number;
+  isActive: boolean;
+}) {
+  const springAngle = useSpring(angleDeg, { stiffness: 120, damping: 20 });
+  const cx = useTransform(springAngle, (a) => ARC_CX + ARC_R * Math.cos(toRad(a)));
+  const cy = useTransform(springAngle, (a) => ARC_CY + ARC_R * Math.sin(toRad(a)));
 
   useEffect(() => {
-    const canvas = canvasRef.current;
-    if (!canvas) return;
-    const ctx = canvas.getContext("2d")!;
-    const dpr = window.devicePixelRatio || 1;
+    springAngle.set(angleDeg);
+  }, [angleDeg, springAngle]);
 
-    const resize = () => {
-      canvas.width = canvas.offsetWidth * dpr;
-      canvas.height = canvas.offsetHeight * dpr;
-      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-      init(canvas);
-    };
-    resize();
-    window.addEventListener("resize", resize);
+  return (
+    <motion.circle
+      cx={cx}
+      cy={cy}
+      animate={{
+        r: isActive ? 5 : 3.5,
+        opacity: isActive ? 1 : 0.35,
+      }}
+      transition={{ duration: 0.4, ease: "easeInOut" }}
+      fill={isActive ? "#ffffff" : "rgba(255,255,255,0.5)"}
+      filter={isActive ? "url(#labelGlow)" : undefined}
+    />
+  );
+}
 
-    const draw = () => {
-      const w = canvas.offsetWidth;
-      const h = canvas.offsetHeight;
-      const sp = scrollProgress.get();
-      time.current += 0.004;
-      ctx.clearRect(0, 0, w, h);
+function ArcLabel({
+  angleDeg,
+  isActive,
+  name,
+}: {
+  angleDeg: number;
+  isActive: boolean;
+  name: string;
+}) {
+  const outset = isActive ? 30 : 22;
+  const r = ARC_R + outset;
+  const springAngle = useSpring(angleDeg, { stiffness: 120, damping: 20 });
+  const x = useTransform(springAngle, (a) => ARC_CX + r * Math.cos(toRad(a)));
+  const y = useTransform(springAngle, (a) => ARC_CY + r * Math.sin(toRad(a)));
 
-      if (!data.current) {
-        animId.current = requestAnimationFrame(draw);
-        return;
-      }
+  useEffect(() => {
+    springAngle.set(angleDeg);
+  }, [angleDeg, springAngle]);
 
-      const { nodes, connections } = data.current;
-      const rotAngle = time.current + sp * Math.PI * 0.8;
-      const cx = w / 2;
-      const cy = h / 2;
+  return (
+    <motion.text
+      x={x}
+      y={y}
+      textAnchor="middle"
+      dominantBaseline="middle"
+      fontFamily="Space Grotesk, sans-serif"
+      letterSpacing="0.12em"
+      animate={{
+        opacity: isActive ? 1 : 0.15,
+        fontSize: isActive ? 26 : 15,
+      }}
+      transition={{ duration: 0.5, ease: "easeInOut" }}
+      fill={isActive ? "#ffffff" : "rgba(255,255,255,0.3)"}
+      filter={isActive ? "url(#labelGlow)" : undefined}
+      style={{ textTransform: "uppercase" }}
+    >
+      {name}
+    </motion.text>
+  );
+}
 
-      for (const n of nodes) {
-        const dx = n.baseX - cx;
-        const dy = n.baseY - cy;
-        const cos = Math.cos(rotAngle * 0.08);
-        const sin = Math.sin(rotAngle * 0.08);
-        n.x = cx + dx * cos - dy * sin;
-        n.y = cy + dx * sin + dy * cos;
-      }
+function CollectSkill({
+  label,
+  color,
+  groupIdx,
+  skillIdx,
+  totalInGroup,
+  scrollYProgress,
+}: {
+  label: string;
+  color: string;
+  groupIdx: number;
+  skillIdx: number;
+  totalInGroup: number;
+  scrollYProgress: ReturnType<typeof useScroll>["scrollYProgress"];
+}) {
+  const perGroup = 1 / TOTAL;
+  const gStart = groupIdx * perGroup;
 
-      const activeGroup = Math.min(
-        Math.floor(sp * skillGroups.length),
-        skillGroups.length - 1
-      );
+  const appearPhase = 0.65;
+  const collectPhase = 0.85;
+  const skillAppearStart = (skillIdx / totalInGroup) * appearPhase;
+  const skillAppearEnd = skillAppearStart + 0.08;
 
-      // Connections
-      for (const [i, j] of connections) {
-        const ni = nodes[i];
-        const nj = nodes[j];
-        const eitherActive = ni.group === activeGroup || nj.group === activeGroup;
-        const bothActive = ni.group === activeGroup && nj.group === activeGroup;
-        const alpha = bothActive ? 0.35 : eitherActive ? 0.15 : 0.05;
-        const [r, g, b] = hexToRgb(skillGroups[ni.group].color);
+  const opacity = useTransform(scrollYProgress, (p) => {
+    const local = Math.max(0, Math.min(1, (p - gStart) / perGroup));
+    if (local < skillAppearStart) return 0;
+    if (local < skillAppearEnd) return (local - skillAppearStart) / 0.08;
+    if (local < collectPhase) return 1;
+    return Math.max(0, 1 - (local - collectPhase) / 0.15);
+  });
 
-        ctx.beginPath();
-        ctx.moveTo(ni.x, ni.y);
-        ctx.lineTo(nj.x, nj.y);
-        ctx.strokeStyle = `rgba(${r}, ${g}, ${b}, ${alpha})`;
-        ctx.lineWidth = bothActive ? 1.5 : eitherActive ? 0.8 : 0.4;
-        ctx.stroke();
-      }
+  const y = useTransform(scrollYProgress, (p) => {
+    const local = Math.max(0, Math.min(1, (p - gStart) / perGroup));
+    if (local < skillAppearStart) return 24;
+    if (local < skillAppearEnd) return 24 - ((local - skillAppearStart) / 0.08) * 24;
+    return 0;
+  });
 
-      // Nodes
-      for (const n of nodes) {
-        const isActive = n.group === activeGroup;
-        const [r, g, b] = hexToRgb(skillGroups[n.group].color);
-        const nodeRadius = isActive ? n.radius * 2 : n.radius;
-        const alpha = isActive ? 1 : 0.3;
+  const scale = useTransform(scrollYProgress, (p) => {
+    const local = Math.max(0, Math.min(1, (p - gStart) / perGroup));
+    if (local < collectPhase) return 1;
+    const t = (local - collectPhase) / 0.15;
+    return 1 - t * 0.6;
+  });
 
-        // Outer glow for active nodes
-        if (isActive) {
-          const glowR = nodeRadius * 6;
-          ctx.beginPath();
-          ctx.arc(n.x, n.y, glowR, 0, Math.PI * 2);
-          const grad = ctx.createRadialGradient(n.x, n.y, 0, n.x, n.y, glowR);
-          grad.addColorStop(0, `rgba(${r}, ${g}, ${b}, 0.25)`);
-          grad.addColorStop(0.5, `rgba(${r}, ${g}, ${b}, 0.08)`);
-          grad.addColorStop(1, `rgba(${r}, ${g}, ${b}, 0)`);
-          ctx.fillStyle = grad;
-          ctx.fill();
-        }
+  const z = useTransform(scrollYProgress, (p) => {
+    const local = Math.max(0, Math.min(1, (p - gStart) / perGroup));
+    if (local < collectPhase) return 0;
+    const t = (local - collectPhase) / 0.15;
+    return t * 800;
+  });
 
-        // Core dot
-        ctx.beginPath();
-        ctx.arc(n.x, n.y, nodeRadius, 0, Math.PI * 2);
-        ctx.fillStyle = `rgba(${r}, ${g}, ${b}, ${alpha})`;
-        ctx.fill();
+  const blur = useTransform(scrollYProgress, (p) => {
+    const local = Math.max(0, Math.min(1, (p - gStart) / perGroup));
+    if (local < collectPhase) return 0;
+    const t = (local - collectPhase) / 0.15;
+    return t * 6;
+  });
 
-        // Ring around active
-        if (isActive) {
-          ctx.beginPath();
-          ctx.arc(n.x, n.y, nodeRadius + 3, 0, Math.PI * 2);
-          ctx.strokeStyle = `rgba(${r}, ${g}, ${b}, 0.3)`;
-          ctx.lineWidth = 1;
-          ctx.stroke();
-        }
-
-        // Labels
-        if (isActive) {
-          ctx.font = "600 13px Space Grotesk, system-ui";
-          ctx.fillStyle = `rgba(${r}, ${g}, ${b}, 0.9)`;
-          ctx.textAlign = "center";
-          ctx.fillText(n.label, n.x, n.y - nodeRadius - 12);
-        }
-      }
-
-      // Group name at center of each active cluster
-      if (activeGroup >= 0 && activeGroup < skillGroups.length) {
-        const group = skillGroups[activeGroup];
-        const groupNodes = nodes.filter((n) => n.group === activeGroup);
-        if (groupNodes.length > 0) {
-          const avgX = groupNodes.reduce((s, n) => s + n.x, 0) / groupNodes.length;
-          const avgY = groupNodes.reduce((s, n) => s + n.y, 0) / groupNodes.length;
-          const [r, g, b] = hexToRgb(group.color);
-          ctx.font = "700 16px Space Grotesk, system-ui";
-          ctx.fillStyle = `rgba(${r}, ${g}, ${b}, 0.5)`;
-          ctx.textAlign = "center";
-          ctx.fillText(group.name.toUpperCase(), avgX, avgY + 4);
-        }
-      }
-
-      animId.current = requestAnimationFrame(draw);
-    };
-
-    draw();
-    return () => {
-      cancelAnimationFrame(animId.current);
-      window.removeEventListener("resize", resize);
-    };
-  }, [canvasRef, scrollProgress, init]);
+  return (
+    <motion.div
+      className="flex items-center justify-center whitespace-nowrap select-none"
+      style={{
+        opacity,
+        y,
+        scale,
+        z,
+        filter: useTransform(blur, (v) => `blur(${v}px)`),
+        willChange: "opacity, transform, filter",
+      }}
+    >
+      <span
+        className="text-xl md:text-2xl lg:text-3xl font-light font-[Space_Grotesk] tracking-wide"
+        style={{ color }}
+      >
+        {label}
+      </span>
+    </motion.div>
+  );
 }
 
 export function Skills() {
   const containerRef = useRef(null);
-  const canvasRef = useRef<HTMLCanvasElement>(null);
   const { scrollYProgress } = useScroll({
     target: containerRef,
     offset: ["start start", "end end"],
   });
 
-  useConstellationCanvas(canvasRef, scrollYProgress);
+  const [activeIdx, setActiveIdx] = useState(0);
 
-  const [activeGroup, setActiveGroup] = useState(0);
   useMotionValueEvent(scrollYProgress, "change", (v) => {
-    setActiveGroup(Math.min(Math.floor(v * skillGroups.length), skillGroups.length - 1));
+    const idx = Math.min(TOTAL - 1, Math.max(0, Math.floor(v * TOTAL)));
+    setActiveIdx(idx);
   });
 
   return (
     <section
       ref={containerRef}
       className="relative bg-black"
-      style={{ height: `${skillGroups.length * 100 + 100}vh` }}
+      style={{ height: "500vh" }}
     >
-      <div className="sticky top-0 h-screen overflow-hidden">
-        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_rgba(0,200,255,0.06)_0%,_transparent_60%)]" />
-
-        {/* Canvas fills the viewport */}
-        <canvas ref={canvasRef} className="absolute inset-0 w-full h-full" />
-
+      <div className="sticky top-0 h-screen overflow-clip flex flex-col">
         {/* Header */}
         <div className="relative z-10 pt-20 md:pt-24 px-6 md:px-12 lg:px-20">
           <motion.div
             style={{
-              opacity: useTransform(scrollYProgress, [0, 0.08], [0, 1]),
-              y: useTransform(scrollYProgress, [0, 0.08], [40, 0]),
+              opacity: useTransform(scrollYProgress, [0, 0.06], [0, 1]),
+              y: useTransform(scrollYProgress, [0, 0.06], [40, 0]),
             }}
           >
             <span className="text-white/30 text-xs tracking-[0.3em] uppercase font-[Space_Grotesk] block mb-4">
               02 / Skills
             </span>
             <h2 className="text-4xl md:text-5xl text-white/90 font-[Space_Grotesk] tracking-tight">
-              Skill Constellation
+              Skill Orbit
             </h2>
           </motion.div>
         </div>
 
-        {/* Active group legend */}
-        <div className="absolute bottom-12 left-1/2 -translate-x-1/2 z-10 flex gap-6 md:gap-10">
-          {skillGroups.map((group, i) => (
-            <motion.div
+        {/* Skills appear one by one, collect together, then zoom away together */}
+        <div
+          className="absolute inset-0 z-10 flex items-center justify-center overflow-clip pb-[25vh] px-6"
+          style={{ perspective: 1200, transformStyle: "preserve-3d" }}
+        >
+          {skillGroups.map((group, gi) => (
+            <div
               key={group.name}
-              className="flex flex-col items-center gap-2"
-              animate={{
-                opacity: activeGroup === i ? 1 : 0.3,
-                scale: activeGroup === i ? 1.15 : 0.9,
-              }}
-              transition={{ duration: 0.4 }}
+              className="absolute inset-0 flex items-center justify-center px-6"
+              style={{ transformStyle: "preserve-3d" }}
             >
-              <div
-                className="w-3 h-3 rounded-full transition-shadow duration-300"
-                style={{
-                  backgroundColor: group.color,
-                  boxShadow: activeGroup === i ? `0 0 20px ${group.color}90` : "none",
-                }}
-              />
-              <span
-                className="text-[10px] md:text-xs tracking-[0.15em] uppercase font-[Space_Grotesk] whitespace-nowrap"
-                style={{ color: activeGroup === i ? group.color : "rgba(255,255,255,0.25)" }}
-              >
-                {group.name}
-              </span>
-            </motion.div>
+              <div className="flex flex-wrap gap-4 md:gap-6 justify-center max-w-4xl">
+                {group.skills.map((label, si) => (
+                  <CollectSkill
+                    key={`${group.name}-${label}`}
+                    label={label}
+                    color={group.color}
+                    groupIdx={gi}
+                    skillIdx={si}
+                    totalInGroup={group.skills.length}
+                    scrollYProgress={scrollYProgress}
+                  />
+                ))}
+              </div>
+            </div>
           ))}
         </div>
+
+        {/* Semicircle arc + labels at bottom */}
+        <svg
+          className="absolute inset-x-0 bottom-0 w-full pointer-events-none z-20"
+          viewBox="0 0 1200 500"
+          preserveAspectRatio="xMidYMax meet"
+          style={{ height: "55vh" }}
+        >
+          {/* Arc line */}
+          <circle
+            cx={ARC_CX}
+            cy={ARC_CY}
+            r={ARC_R}
+            fill="none"
+            stroke="rgba(255,255,255,0.14)"
+            strokeWidth="1.5"
+          />
+
+          <defs>
+            <filter id="labelGlow" x="-50%" y="-50%" width="200%" height="200%">
+              <feGaussianBlur in="SourceGraphic" stdDeviation="4" result="blur" />
+              <feMerge>
+                <feMergeNode in="blur" />
+                <feMergeNode in="SourceGraphic" />
+              </feMerge>
+            </filter>
+          </defs>
+
+          {/* Group dots + labels along the arc */}
+          {skillGroups.map((group, i) => {
+            const angleDeg = -90 + (i - activeIdx) * LABEL_SPREAD_DEG;
+            const isActive = i === activeIdx;
+
+            return (
+              <g key={group.name}>
+                <ArcDot angleDeg={angleDeg} isActive={isActive} />
+                <ArcLabel angleDeg={angleDeg} isActive={isActive} name={group.name} />
+              </g>
+            );
+          })}
+        </svg>
       </div>
     </section>
   );
