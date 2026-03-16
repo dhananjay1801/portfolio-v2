@@ -1,0 +1,42 @@
+# Node.js / Frontend
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# Build output
+dist/
+build/
+.next/
+out/
+.nuxt/
+coverage/
+
+# Environment variables / secrets
+.env
+.env.*
+!.env.example
+
+# Logs
+logs/
+*.log
+*.log.*
+
+# IDE / Editor
+.vscode/
+.idea/
+*.swp
+*.swo
+*.DS_Store
+Thumbs.db
+.cursor/
+
+# Misc
+.cache/
+.parcel-cache/
+.turbo/
+.eslintcache
+.stylelintcache
+.sass-cache/
+
