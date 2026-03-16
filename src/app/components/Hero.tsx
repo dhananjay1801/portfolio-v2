@@ -1,146 +1,13 @@
 import { motion, useScroll, useTransform } from "motion/react";
-import { useRef, useEffect, useCallback } from "react";
-
-interface Particle {
-  x: number;
-  y: number;
-  vx: number;
-  vy: number;
-  radius: number;
-  opacity: number;
-}
-
-function useNeuralCanvas(
-  canvasRef: React.RefObject<HTMLCanvasElement | null>,
-  scrollProgress: { get: () => number }
-) {
-  const particles = useRef<Particle[]>([]);
-  const animId = useRef(0);
-
-  const init = useCallback((canvas: HTMLCanvasElement) => {
-    const count = Math.min(Math.floor((canvas.width * canvas.height) / 18000), 120);
-    particles.current = Array.from({ length: count }, () => ({
-      x: Math.random() * canvas.width,
-      y: Math.random() * canvas.height,
-      vx: (Math.random() - 0.5) * 0.4,
-      vy: (Math.random() - 0.5) * 0.4,
-      radius: Math.random() * 1.5 + 0.5,
-      opacity: Math.random() * 0.5 + 0.2,
-    }));
-  }, []);
-
-  useEffect(() => {
-    const canvas = canvasRef.current;
-    if (!canvas) return;
-    const ctx = canvas.getContext("2d")!;
-    const dpr = window.devicePixelRatio || 1;
-
-    const resize = () => {
-      canvas.width = canvas.offsetWidth * dpr;
-      canvas.height = canvas.offsetHeight * dpr;
-      ctx.scale(dpr, dpr);
-      init(canvas);
-    };
-    resize();
-    window.addEventListener("resize", resize);
-
-    const connectionDistance = 140;
-
-    const draw = () => {
-      const w = canvas.offsetWidth;
-      const h = canvas.offsetHeight;
-      const sp = scrollProgress.get();
-      ctx.clearRect(0, 0, w, h);
-
-      // Draw grid that tilts with scroll
-      ctx.save();
-      const tilt = sp * 12;
-      ctx.translate(w / 2, h / 2);
-      ctx.transform(1, 0, Math.sin(tilt * Math.PI / 180) * 0.15, 1, 0, 0);
-      ctx.translate(-w / 2, -h / 2);
-
-      const gridSize = 60;
-      ctx.strokeStyle = `rgba(0, 200, 255, ${0.04 - sp * 0.03})`;
-      ctx.lineWidth = 0.5;
-      for (let x = 0; x <= w; x += gridSize) {
-        ctx.beginPath();
-        ctx.moveTo(x, 0);
-        ctx.lineTo(x, h);
-        ctx.stroke();
-      }
-      for (let y = 0; y <= h; y += gridSize) {
-        ctx.beginPath();
-        ctx.moveTo(0, y);
-        ctx.lineTo(w, y);
-        ctx.stroke();
-      }
-      ctx.restore();
-
-      // Update and draw particles
-      const pts = particles.current;
-      for (const p of pts) {
-        p.x += p.vx + sp * 0.5;
-        p.y += p.vy;
-        if (p.x < 0) p.x = w;
-        if (p.x > w) p.x = 0;
-        if (p.y < 0) p.y = h;
-        if (p.y > h) p.y = 0;
-      }
-
-      // Draw connections
-      for (let i = 0; i < pts.length; i++) {
-        for (let j = i + 1; j < pts.length; j++) {
-          const dx = pts[i].x - pts[j].x;
-          const dy = pts[i].y - pts[j].y;
-          const dist = Math.sqrt(dx * dx + dy * dy);
-          if (dist < connectionDistance) {
-            const alpha = (1 - dist / connectionDistance) * 0.15;
-            ctx.beginPath();
-            ctx.moveTo(pts[i].x, pts[i].y);
-            ctx.lineTo(pts[j].x, pts[j].y);
-            ctx.strokeStyle = `rgba(0, 200, 255, ${alpha})`;
-            ctx.lineWidth = 0.6;
-            ctx.stroke();
-          }
-        }
-      }
-
-      // Draw nodes
-      for (const p of pts) {
-        ctx.beginPath();
-        ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
-        ctx.fillStyle = `rgba(0, 200, 255, ${p.opacity})`;
-        ctx.fill();
-        // Glow
-        ctx.beginPath();
-        ctx.arc(p.x, p.y, p.radius * 3, 0, Math.PI * 2);
-        const grad = ctx.createRadialGradient(p.x, p.y, 0, p.x, p.y, p.radius * 3);
-        grad.addColorStop(0, `rgba(0, 200, 255, ${p.opacity * 0.3})`);
-        grad.addColorStop(1, "rgba(0, 200, 255, 0)");
-        ctx.fillStyle = grad;
-        ctx.fill();
-      }
-
-      animId.current = requestAnimationFrame(draw);
-    };
-
-    draw();
-    return () => {
-      cancelAnimationFrame(animId.current);
-      window.removeEventListener("resize", resize);
-    };
-  }, [canvasRef, scrollProgress, init]);
-}
+import { useRef } from "react";
+import Antigravity from "./Antigravity";
 
 export function Hero() {
   const ref = useRef(null);
-  const canvasRef = useRef<HTMLCanvasElement>(null);
   const { scrollYProgress } = useScroll({
     target: ref,
     offset: ["start start", "end start"],
   });
-
-  useNeuralCanvas(canvasRef, scrollYProgress);
 
   const bgY = useTransform(scrollYProgress, [0, 1], [0, 300]);
   const subtitleOpacity = useTransform(scrollYProgress, [0, 0.3], [1, 0]);
@@ -155,18 +22,26 @@ export function Hero() {
   return (
     <section ref={ref} className="relative h-[200vh]">
       <div className="sticky top-0 h-screen flex items-center justify-center overflow-hidden bg-black">
-        {/* Neural network canvas */}
-        <motion.div className="absolute inset-0" style={{ y: bgY }}>
-          <canvas
-            ref={canvasRef}
-            className="absolute inset-0 w-full h-full"
+        {/* Antigravity particle background */}
+        <motion.div className="absolute inset-x-0 -top-[300px] bottom-0 h-[calc(100%+300px)]" style={{ y: bgY }}>
+          <Antigravity
+            count={300}
+            magnetRadius={6}
+            ringRadius={7}
+            waveSpeed={0.4}
+            waveAmplitude={1}
+            particleSize={1.5}
+            lerpSpeed={0.05}
+            color="#5227FF"
+            autoAnimate
+            particleVariance={1}
+            rotationSpeed={0}
+            depthFactor={1}
+            pulseSpeed={3}
+            particleShape="capsule"
+            fieldStrength={10}
           />
         </motion.div>
-
-        {/* Radial glows */}
-        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_rgba(0,200,255,0.12)_0%,_transparent_60%)]" />
-        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,_rgba(100,50,255,0.08)_0%,_transparent_50%)]" />
-        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_bottom_left,_rgba(0,150,255,0.06)_0%,_transparent_50%)]" />
 
         {/* Content */}
         <motion.div

@@ -1,5 +1,6 @@
 import { motion, useScroll, useTransform } from "motion/react";
 import { useRef } from "react";
+import ProfileCard from "./ProfileCard";
 
 const words = [
   "I'm", "a", "passionate", "developer", "with", "a", "keen", "eye", "for", "design",
@@ -61,18 +62,47 @@ export function About() {
             </span>
           </motion.div>
 
-          <div className="max-w-5xl">
-            <p className="text-[clamp(1.25rem,3vw,2.5rem)] leading-[1.4] font-[Inter] tracking-tight">
-              {words.map((word, i) => {
-                const start = 0.1 + (i / words.length) * 0.5;
-                const end = start + 0.03;
-                return (
-                  <Word key={i} progress={scrollYProgress} range={[start, end]}>
-                    {word}
-                  </Word>
-                );
-              })}
-            </p>
+          <div className="flex items-start gap-12 lg:gap-20">
+            <div className="flex-1 min-w-0">
+              <p className="text-[clamp(1.25rem,3vw,2.5rem)] leading-[1.4] font-[Inter] tracking-tight">
+                {words.map((word, i) => {
+                  const start = 0.1 + (i / words.length) * 0.5;
+                  const end = start + 0.03;
+                  return (
+                    <Word key={i} progress={scrollYProgress} range={[start, end]}>
+                      {word}
+                    </Word>
+                  );
+                })}
+              </p>
+            </div>
+
+            <motion.div
+              className="hidden lg:flex flex-shrink-0 items-start"
+              style={{
+                opacity: useTransform(scrollYProgress, [0.15, 0.3], [0, 1]),
+                y: useTransform(scrollYProgress, [0.15, 0.3], [40, 0]),
+              }}
+            >
+              <ProfileCard
+                name="Dhananjay Tailor"
+                title="Software/DevOps Engineer"
+                handle="javicodes"
+                status="Online"
+                contactText="Contact Me"
+                avatarUrl="/profile.jpg"
+                showUserInfo={false}
+                enableTilt
+                enableMobileTilt={false}
+                onContactClick={() => {
+                  document.getElementById("contact")?.scrollIntoView({ behavior: "smooth" });
+                }}
+                behindGlowColor="rgba(125, 190, 255, 0.67)"
+                iconUrl="/assets/demo/iconpattern.svg"
+                behindGlowEnabled
+                innerGradient="linear-gradient(145deg,#60496e8c 0%,#71C4FF44 100%)"
+              />
+            </motion.div>
           </div>
 
           <motion.div

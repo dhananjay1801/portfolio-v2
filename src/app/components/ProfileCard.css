@@ -1,0 +1,266 @@
+.pc-card-wrapper {
+  --pointer-x: 50%;
+  --pointer-y: 50%;
+  --background-x: 50%;
+  --background-y: 50%;
+  --pointer-from-center: 0;
+  --pointer-from-top: 0.5;
+  --pointer-from-left: 0.5;
+  --rotate-x: 0deg;
+  --rotate-y: 0deg;
+  --icon: none;
+  --grain: none;
+  --inner-gradient: linear-gradient(145deg, #60496e8c 0%, #71c4ff44 100%);
+  --behind-glow-color: rgba(125, 190, 255, 0.67);
+  --behind-glow-size: 50%;
+
+  position: relative;
+  display: inline-block;
+  perspective: 1200px;
+}
+
+.pc-behind {
+  position: absolute;
+  inset: -20%;
+  background: radial-gradient(
+    circle at var(--pointer-x) var(--pointer-y),
+    var(--behind-glow-color),
+    transparent var(--behind-glow-size)
+  );
+  opacity: 0;
+  transition: opacity 0.4s ease;
+  pointer-events: none;
+  z-index: 0;
+  filter: blur(30px);
+}
+
+.pc-card-shell.active .pc-behind,
+.pc-card-wrapper:hover .pc-behind {
+  opacity: 1;
+}
+
+.pc-card-shell {
+  position: relative;
+  z-index: 1;
+  transform-style: preserve-3d;
+  transform: rotateX(var(--rotate-y)) rotateY(var(--rotate-x));
+  transition: transform 0.1s ease-out;
+  will-change: transform;
+}
+
+.pc-card-shell:not(.active) {
+  transition: transform 0.6s cubic-bezier(0.23, 1, 0.32, 1);
+}
+
+.pc-card-shell.entering {
+  transition: transform 0.18s ease-out;
+}
+
+.pc-card {
+  position: relative;
+  width: 280px;
+  height: 380px;
+  border-radius: 20px;
+  overflow: hidden;
+  background: #0a0a0f;
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  box-shadow:
+    0 4px 60px rgba(0, 0, 0, 0.5),
+    0 0 0 1px rgba(255, 255, 255, 0.03) inset;
+}
+
+.pc-inside {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  border-radius: inherit;
+}
+
+.pc-shine {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(
+    circle at var(--pointer-x) var(--pointer-y),
+    rgba(255, 255, 255, 0.06) 0%,
+    transparent 60%
+  );
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  z-index: 5;
+  pointer-events: none;
+  mix-blend-mode: overlay;
+}
+
+.pc-card-shell.active .pc-shine {
+  opacity: 1;
+}
+
+.pc-glare {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(
+    ellipse at var(--pointer-x) var(--pointer-y),
+    rgba(200, 230, 255, 0.12) 0%,
+    transparent 50%
+  );
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  z-index: 6;
+  pointer-events: none;
+}
+
+.pc-card-shell.active .pc-glare {
+  opacity: var(--pointer-from-center);
+}
+
+.pc-content {
+  position: relative;
+  z-index: 3;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.pc-content.pc-avatar-content {
+  position: absolute;
+  inset: 0;
+  background: var(--inner-gradient);
+}
+
+.pc-content.pc-avatar-content::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image: var(--icon);
+  background-size: 200px;
+  background-repeat: repeat;
+  opacity: 0.18;
+  z-index: 2;
+  pointer-events: none;
+}
+
+.pc-content .avatar {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center top;
+  position: relative;
+  z-index: 1;
+  display: block;
+}
+
+.pc-user-info {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  background: linear-gradient(to top, rgba(0, 0, 0, 0.85) 0%, transparent 100%);
+  z-index: 4;
+}
+
+.pc-user-details {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.pc-mini-avatar {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  overflow: hidden;
+  flex-shrink: 0;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.pc-mini-avatar img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.pc-user-text {
+  display: flex;
+  flex-direction: column;
+}
+
+.pc-handle {
+  font-size: 11px;
+  color: rgba(255, 255, 255, 0.7);
+  font-family: 'Space Grotesk', system-ui;
+  letter-spacing: 0.02em;
+}
+
+.pc-status {
+  font-size: 10px;
+  color: rgba(0, 200, 255, 0.6);
+  font-family: 'Space Grotesk', system-ui;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+.pc-status::before {
+  content: '';
+  display: inline-block;
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: #00c8ff;
+  margin-right: 5px;
+  vertical-align: middle;
+  box-shadow: 0 0 6px rgba(0, 200, 255, 0.6);
+}
+
+.pc-contact-btn {
+  font-size: 11px;
+  padding: 5px 14px;
+  border-radius: 999px;
+  border: 1px solid rgba(0, 200, 255, 0.2);
+  background: rgba(0, 200, 255, 0.08);
+  color: rgba(0, 200, 255, 0.8);
+  font-family: 'Space Grotesk', system-ui;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  white-space: nowrap;
+}
+
+.pc-contact-btn:hover {
+  background: rgba(0, 200, 255, 0.15);
+  border-color: rgba(0, 200, 255, 0.4);
+  color: #00c8ff;
+  box-shadow: 0 0 20px rgba(0, 200, 255, 0.1);
+}
+
+.pc-details {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 20px;
+  background: linear-gradient(to top, rgba(0, 0, 0, 0.9) 0%, transparent 100%);
+}
+
+.pc-details h3 {
+  font-size: 18px;
+  color: rgba(255, 255, 255, 0.9);
+  font-family: 'Space Grotesk', system-ui;
+  letter-spacing: -0.01em;
+  margin: 0 0 2px;
+}
+
+.pc-details p {
+  font-size: 12px;
+  color: rgba(0, 200, 255, 0.5);
+  font-family: 'Space Grotesk', system-ui;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  margin: 0;
+}

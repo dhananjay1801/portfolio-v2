@@ -8,10 +8,12 @@ import { Education } from "./components/Education";
 import { Certifications } from "./components/Certifications";
 import { Publications } from "./components/Publications";
 import { Contact } from "./components/Contact";
+import SplashCursor from "./components/SplashCursor";
 
 export default function App() {
   return (
     <div className="bg-black text-white selection:bg-cyan-500/30 selection:text-white">
+      <SplashCursor />
       <Navigation />
 
       <div id="hero">
