@@ -6,6 +6,7 @@ import {
   useSpring,
 } from "motion/react";
 import { useEffect, useRef, useState } from "react";
+import Particles from "../../components/Particles";
 
 const skillGroups = [
   {
@@ -228,23 +229,40 @@ export function Skills() {
       className="relative bg-black"
       style={{ height: "500vh" }}
     >
-      <div className="sticky top-0 h-screen overflow-clip flex flex-col">
-        {/* Header */}
-        <div className="relative z-10 pt-20 md:pt-24 px-6 md:px-12 lg:px-20">
-          <motion.div
-            style={{
-              opacity: useTransform(scrollYProgress, [0, 0.06], [0, 1]),
-              y: useTransform(scrollYProgress, [0, 0.06], [40, 0]),
-            }}
-          >
-            <span className="text-white/30 text-xs tracking-[0.3em] uppercase font-[Space_Grotesk] block mb-4">
-              02 / Skills
-            </span>
-            <h2 className="text-4xl md:text-5xl text-white/90 font-[Space_Grotesk] tracking-tight">
-              Skill Orbit
-            </h2>
-          </motion.div>
-        </div>
+      <div className="sticky top-0 h-screen overflow-clip">
+        <div className="relative h-screen w-screen flex flex-col">
+          {/* Particles background (100vw x 100vh) */}
+          <div className="absolute inset-0 z-0 pointer-events-none">
+            <Particles
+              particleColors={["#ffffff"]}
+              particleCount={200}
+              particleSpread={10}
+              speed={0.1}
+              particleBaseSize={100}
+              moveParticlesOnHover
+              alphaParticles={false}
+              disableRotation={false}
+              pixelRatio={1}
+              className="w-full h-full"
+            />
+          </div>
+
+          {/* Header */}
+          <div className="relative z-10 pt-20 md:pt-24 px-6 md:px-12 lg:px-20">
+            <motion.div
+              style={{
+                opacity: useTransform(scrollYProgress, [0, 0.06], [0, 1]),
+                y: useTransform(scrollYProgress, [0, 0.06], [40, 0]),
+              }}
+            >
+              <span className="text-white/30 text-xs tracking-[0.3em] uppercase font-[Space_Grotesk] block mb-4">
+                02 / Skills
+              </span>
+              <h2 className="text-4xl md:text-5xl text-white/90 font-[Space_Grotesk] tracking-tight">
+                Skill Orbit
+              </h2>
+            </motion.div>
+          </div>
 
         {/* Skills appear one by one, collect together, then zoom away together */}
         <div
@@ -274,22 +292,22 @@ export function Skills() {
           ))}
         </div>
 
-        {/* Semicircle arc + labels at bottom */}
-        <svg
-          className="absolute inset-x-0 bottom-0 w-full pointer-events-none z-20"
-          viewBox="0 0 1200 500"
-          preserveAspectRatio="xMidYMax meet"
-          style={{ height: "55vh" }}
-        >
-          {/* Arc line */}
-          <circle
-            cx={ARC_CX}
-            cy={ARC_CY}
-            r={ARC_R}
-            fill="none"
-            stroke="rgba(255,255,255,0.14)"
-            strokeWidth="1.5"
-          />
+          {/* Semicircle arc + labels at bottom */}
+          <svg
+            className="absolute inset-x-0 bottom-0 w-full pointer-events-none z-20"
+            viewBox="0 0 1200 500"
+            preserveAspectRatio="xMidYMax meet"
+            style={{ height: "55vh" }}
+          >
+            {/* Arc line */}
+            <circle
+              cx={ARC_CX}
+              cy={ARC_CY}
+              r={ARC_R}
+              fill="none"
+              stroke="rgba(255,255,255,0.14)"
+              strokeWidth="1.5"
+            />
 
           <defs>
             <filter id="labelGlow" x="-50%" y="-50%" width="200%" height="200%">
@@ -313,7 +331,8 @@ export function Skills() {
               </g>
             );
           })}
-        </svg>
+          </svg>
+        </div>
       </div>
     </section>
   );

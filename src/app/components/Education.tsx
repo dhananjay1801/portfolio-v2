@@ -1,22 +1,21 @@
-import { motion, useScroll, useTransform } from "motion/react";
+import { motion, useScroll, useSpring, useTransform } from "motion/react";
 import { useRef } from "react";
 
 export function Education() {
   const containerRef = useRef(null);
   const { scrollYProgress } = useScroll({
     target: containerRef,
-    offset: ["start start", "end end"],
+    // Start progress a bit early so animation begins before section hits top
+    offset: ["start 30%", "end 70%"],
   });
 
-  const rotateY = useTransform(scrollYProgress, [0, 0.5, 1], [45, 0, -45]);
-  const rotateX = useTransform(scrollYProgress, [0, 0.25, 0.5, 0.75, 1], [3, -1, 0, -1, 3]);
-  const scale = useTransform(scrollYProgress, [0, 0.4, 0.6, 1], [0.92, 1, 1, 0.92]);
-  const cardOpacity = useTransform(scrollYProgress, [0, 0.05, 0.95, 1], [0, 1, 1, 0]);
+  const smoothed = useSpring(scrollYProgress, { stiffness: 85, damping: 24, mass: 1 });
 
-  const frontOpacity = useTransform(scrollYProgress, [0.2, 0.3, 0.7, 0.8], [0, 1, 1, 0]);
-  const backOpacity = useTransform(scrollYProgress, [0.2, 0.3, 0.7, 0.8], [1, 0, 0, 1]);
-
-  const shimmerX = useTransform(rotateY, [45, 0, -45], [85, 50, 15]);
+  const rotateY = useTransform(smoothed, [0, 0.5, 1], [180, 0, -180]);
+  const rotateX = useTransform(smoothed, [0, 0.25, 0.5, 0.75, 1], [2, -1, 0, -1, 2]);
+  const rotateZ = useTransform(smoothed, [0, 0.25, 0.75, 1], [90, 0, 0, 90]);
+  const scale = useTransform(smoothed, [0, 0.4, 0.6, 1], [0.92, 1, 1, 0.92]);
+  const shimmerX = useTransform(rotateY, [180, 0, -180], [85, 50, 15]);
 
   return (
     <section
@@ -27,7 +26,6 @@ export function Education() {
       <div className="sticky top-0 h-screen flex flex-col overflow-hidden">
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_rgba(0,200,255,0.04)_0%,_transparent_60%)]" />
 
-        {/* Header */}
         <div className="relative z-10 pt-12 md:pt-16 px-6 md:px-12 lg:px-20 shrink-0">
           <motion.div
             style={{
@@ -44,23 +42,23 @@ export function Education() {
           </motion.div>
         </div>
 
-        {/* Card */}
         <div
           className="flex-1 flex items-center justify-center px-6"
           style={{ perspective: "1200px" }}
         >
           <motion.div
-            className="relative w-full max-w-[620px]"
+            className="relative"
             style={{
-              aspectRatio: "1.6 / 1",
+              width: "570px",
+              height: "388px",
               rotateY,
               rotateX,
+              rotateZ,
               scale,
-              opacity: cardOpacity,
+              opacity: 1,
               transformStyle: "preserve-3d",
             }}
           >
-            {/* Ambient glow */}
             <motion.div
               className="absolute -inset-16 rounded-[60px] blur-[60px] pointer-events-none"
               style={{
@@ -69,15 +67,34 @@ export function Education() {
               }}
             />
 
-            {/* Card base (always visible when card is) */}
-            <div className="absolute inset-0 rounded-2xl border border-white/10 bg-[#080f19] shadow-[0_4px_80px_rgba(0,200,255,0.06)]">
+            <div
+              className="absolute inset-0 rounded-2xl border border-white/10 bg-[#080f19] shadow-[0_4px_80px_rgba(0,200,255,0.06)]"
+              style={{
+                backfaceVisibility: "hidden",
+                WebkitBackfaceVisibility: "hidden",
+                transform: "translateZ(1px)",
+              }}
+            >
               <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_60%_40%,_rgba(0,200,255,0.06)_0%,_transparent_60%)]" />
             </div>
 
-            {/* FRONT FACE */}
+            <div
+              className="absolute inset-0 rounded-2xl border border-white/10 bg-[#080f19] shadow-[0_4px_80px_rgba(0,200,255,0.06)]"
+              style={{
+                backfaceVisibility: "hidden",
+                WebkitBackfaceVisibility: "hidden",
+                transform: "rotateY(180deg) translateZ(1px)",
+              }}
+            />
+
             <motion.div
               className="absolute inset-0 rounded-2xl overflow-hidden"
-              style={{ opacity: frontOpacity }}
+              style={{
+                backfaceVisibility: "hidden",
+                WebkitBackfaceVisibility: "hidden",
+                transform: "translateZ(2px)",
+                opacity: useTransform(rotateY, [180, 90, 0, -90, -180], [0, 0, 1, 0, 0]),
+              }}
             >
               <svg className="absolute right-[-8%] top-[-12%] w-[65%] h-[125%] opacity-[0.08]" viewBox="0 0 400 400" fill="none">
                 {[60, 100, 140, 180, 220, 260].map((r) => (
@@ -94,6 +111,9 @@ export function Education() {
                   </h3>
                   <p className="text-cyan-400/60 text-[11px] md:text-xs tracking-[0.15em] uppercase font-[Space_Grotesk] mt-1.5">
                     Software Engineering
+                  </p>
+                  <p className="text-white/70 text-xs tracking-[0.15em] uppercase font-[Space_Grotesk] mt-3">
+                    University Name · School of Engineering
                   </p>
                 </div>
 
@@ -121,7 +141,6 @@ export function Education() {
                 </div>
               </div>
 
-              {/* Shimmer */}
               <motion.div
                 className="absolute inset-0 pointer-events-none"
                 style={{
@@ -132,41 +151,26 @@ export function Education() {
               />
             </motion.div>
 
-            {/* BACK FACE */}
-            <motion.div
+            <div
               className="absolute inset-0 rounded-2xl overflow-hidden"
-              style={{ opacity: backOpacity }}
+              style={{
+                backfaceVisibility: "hidden",
+                WebkitBackfaceVisibility: "hidden",
+                transform: "rotateY(180deg) translateZ(2px)",
+              }}
             >
-              <svg className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-[85%] h-[85%] opacity-[0.07]" viewBox="0 0 400 400" fill="none">
-                {[40, 70, 100, 130, 160, 190, 220, 260].map((r) => (
-                  <circle key={r} cx="200" cy="200" r={r} stroke="rgba(0,200,255,0.5)" strokeWidth="0.6" />
-                ))}
-              </svg>
-
-              <div className="relative z-10 flex flex-col items-center justify-center h-full p-7 md:p-9 text-center">
-                <div className="w-16 h-16 rounded-full border border-cyan-400/15 flex items-center justify-center mb-5">
-                  <svg viewBox="0 0 24 24" className="w-7 h-7 text-cyan-300/25" fill="none" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round">
-                    <path d="M22 10v6M2 10l10-5 10 5-10 5z" />
-                    <path d="M6 12v5c0 1.657 2.686 3 6 3s6-1.343 6-3v-5" />
-                  </svg>
-                </div>
-
-                <p className="text-white/40 text-[10px] tracking-[0.3em] uppercase font-[Space_Grotesk] mb-2">
-                  University Name
-                </p>
-                <p className="text-white/20 text-[9px] tracking-[0.2em] uppercase font-[Space_Grotesk]">
-                  School of Engineering
-                </p>
-
-                <div className="absolute bottom-[28%] left-0 right-0 h-8 bg-gradient-to-r from-transparent via-white/[0.04] to-transparent" />
-
-                <div className="absolute bottom-6 left-0 right-0 flex justify-center">
-                  <span className="text-white/15 text-[8px] tracking-[0.25em] uppercase font-[Space_Grotesk]">
-                    Student ID · XXXX-XXXX-2017
-                  </span>
-                </div>
+              <div
+                className="absolute inset-0 flex items-center justify-center p-4"
+                style={{ transform: "rotateZ(90deg) scale(1.5)" }}
+              >
+                <img
+                  src="/ace_of_spades.svg"
+                  alt="Ace of Spades"
+                  className="w-full h-full object-contain drop-shadow-[0_0_40px_rgba(0,200,255,0.3)]"
+                  style={{ filter: "invert(1) sepia(0.5) saturate(8) hue-rotate(170deg)", opacity: 0.55 }}
+                />
               </div>
-            </motion.div>
+            </div>
           </motion.div>
         </div>
       </div>
