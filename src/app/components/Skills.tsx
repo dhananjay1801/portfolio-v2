@@ -49,7 +49,10 @@ const skillGroups = [
 ];
 
 const TOTAL = skillGroups.length;
-const LABEL_SPREAD_DEG = 30;
+const BASE_LABEL_SPREAD_DEG = 30;
+const EXIT_LABEL_SPREAD_DEG = 92;
+const COLLECT_PHASE = 0.85;
+const COLLECT_END_PHASE = 1.0;
 
 const ARC_R = 520;
 const ARC_CX = 600;
@@ -217,11 +220,34 @@ export function Skills() {
   });
 
   const [activeIdx, setActiveIdx] = useState(0);
+  const [labelSpreadDeg, setLabelSpreadDeg] = useState(BASE_LABEL_SPREAD_DEG);
 
   useMotionValueEvent(scrollYProgress, "change", (v) => {
     const idx = Math.min(TOTAL - 1, Math.max(0, Math.floor(v * TOTAL)));
     setActiveIdx(idx);
   });
+
+  // Exit animation for the arc + labels: increase spread ("gap") and fade/slide out near the end.
+  useMotionValueEvent(scrollYProgress, "change", (v) => {
+    const perGroup = 1 / TOTAL;
+    const lastGroupStart = (TOTAL - 1) * perGroup;
+    const exitStart = lastGroupStart + perGroup * COLLECT_PHASE;
+    const exitEnd = lastGroupStart + perGroup * COLLECT_END_PHASE;
+    if (v <= exitStart) {
+      setLabelSpreadDeg(BASE_LABEL_SPREAD_DEG);
+      return;
+    }
+    const t = Math.min(1, Math.max(0, (v - exitStart) / (exitEnd - exitStart)));
+    setLabelSpreadDeg(BASE_LABEL_SPREAD_DEG + t * (EXIT_LABEL_SPREAD_DEG - BASE_LABEL_SPREAD_DEG));
+  });
+
+  const perGroup = 1 / TOTAL;
+  const lastGroupStart = (TOTAL - 1) * perGroup;
+  const arcExitStart = lastGroupStart + perGroup * COLLECT_PHASE;
+  const arcExitEnd = lastGroupStart + perGroup * COLLECT_END_PHASE;
+  const arcOpacity = useTransform(scrollYProgress, [arcExitStart, arcExitEnd], [1, 0]);
+  const arcY = useTransform(scrollYProgress, [arcExitStart, arcExitEnd], [0, 70]);
+  const arcBlur = useTransform(scrollYProgress, [arcExitStart, arcExitEnd], [0, 10]);
 
   return (
     <section
@@ -292,46 +318,55 @@ export function Skills() {
           ))}
         </div>
 
-          {/* Semicircle arc + labels at bottom */}
-          <svg
+          {/* Semicircle arc + labels at bottom (exit with "gap" spread) */}
+          <motion.div
             className="absolute inset-x-0 bottom-0 w-full pointer-events-none z-20"
-            viewBox="0 0 1200 500"
-            preserveAspectRatio="xMidYMax meet"
-            style={{ height: "55vh" }}
+            style={{
+              opacity: arcOpacity,
+              y: arcY,
+              filter: useTransform(arcBlur, (v) => `blur(${v}px)`),
+            }}
           >
-            {/* Arc line */}
-            <circle
-              cx={ARC_CX}
-              cy={ARC_CY}
-              r={ARC_R}
-              fill="none"
-              stroke="rgba(255,255,255,0.14)"
-              strokeWidth="1.5"
-            />
+            <svg
+              className="w-full"
+              viewBox="0 0 1200 500"
+              preserveAspectRatio="xMidYMax meet"
+              style={{ height: "55vh" }}
+            >
+              {/* Arc line */}
+              <circle
+                cx={ARC_CX}
+                cy={ARC_CY}
+                r={ARC_R}
+                fill="none"
+                stroke="rgba(255,255,255,0.14)"
+                strokeWidth="1.5"
+              />
 
-          <defs>
-            <filter id="labelGlow" x="-50%" y="-50%" width="200%" height="200%">
-              <feGaussianBlur in="SourceGraphic" stdDeviation="4" result="blur" />
-              <feMerge>
-                <feMergeNode in="blur" />
-                <feMergeNode in="SourceGraphic" />
-              </feMerge>
-            </filter>
-          </defs>
+              <defs>
+                <filter id="labelGlow" x="-50%" y="-50%" width="200%" height="200%">
+                  <feGaussianBlur in="SourceGraphic" stdDeviation="4" result="blur" />
+                  <feMerge>
+                    <feMergeNode in="blur" />
+                    <feMergeNode in="SourceGraphic" />
+                  </feMerge>
+                </filter>
+              </defs>
 
-          {/* Group dots + labels along the arc */}
-          {skillGroups.map((group, i) => {
-            const angleDeg = -90 + (i - activeIdx) * LABEL_SPREAD_DEG;
-            const isActive = i === activeIdx;
+              {/* Group dots + labels along the arc */}
+              {skillGroups.map((group, i) => {
+                const angleDeg = -90 + (i - activeIdx) * labelSpreadDeg;
+                const isActive = i === activeIdx;
 
-            return (
-              <g key={group.name}>
-                <ArcDot angleDeg={angleDeg} isActive={isActive} />
-                <ArcLabel angleDeg={angleDeg} isActive={isActive} name={group.name} />
-              </g>
-            );
-          })}
-          </svg>
+                return (
+                  <g key={group.name}>
+                    <ArcDot angleDeg={angleDeg} isActive={isActive} />
+                    <ArcLabel angleDeg={angleDeg} isActive={isActive} name={group.name} />
+                  </g>
+                );
+              })}
+            </svg>
+          </motion.div>
         </div>
       </div>
     </section>
