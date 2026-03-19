@@ -76,6 +76,24 @@ const projects = [
   },
 ];
 
+// Card width as a fraction of viewport width (matches lg:w-[40vw], capped at 600px)
+// Gap between cards in vw units (gap-8 = 2rem ≈ 2vw on 1024px screen, use 2.5 as safe avg)
+// Total scroll distance = (n-1) cards * (cardWidth + gap)
+// We express the x transform in %, where 100% = full track width
+// Simplest: express end position in vw so it's viewport-relative and matches card sizes exactly
+
+const CARD_WIDTH_VW = 40; // lg:w-[40vw]
+const GAP_VW = 2.5;       // gap-8 ≈ 2rem, ~2.5vw on average screen
+const PADDING_LEFT_VW = 5; // lg:pl-20 ≈ 5vw
+
+// How many vw units we need to scroll to bring the last card into view
+// Each step scrolls one card+gap width
+const totalScrollVW = (projects.length - 1) * (CARD_WIDTH_VW + GAP_VW);
+
+// Section height: 100vh (to show first card) + scroll distance converted to vh
+// Using 1:1 vw→vh mapping keeps it simple and correct
+const SECTION_HEIGHT_VH = 100 + totalScrollVW;
+
 export function Projects() {
   const containerRef = useRef(null);
   const { scrollYProgress } = useScroll({
@@ -83,19 +101,18 @@ export function Projects() {
     offset: ["start start", "end end"],
   });
 
-  const x = useTransform(
-    scrollYProgress,
-    [0, 1],
-    ["0%", `-${(projects.length - 1) * 50}%`]
-  );
+  // Move track left by totalScrollVW worth of vw. Express as vw string.
+  // framer-motion supports `${n}vw` in useTransform output.
+  // Start horizontal scroll a little later so the first card settles in place
+  const x = useTransform(scrollYProgress, [0, 0.15, 1], ["0vw", "0vw", `-${totalScrollVW}vw`]);
 
   return (
     <section
       ref={containerRef}
       className="relative bg-black"
-      style={{ height: `${projects.length * 80}vh` }}
+      style={{ height: `${SECTION_HEIGHT_VH}vh` }}
     >
-      <div className="sticky top-0 h-screen flex flex-col overflow-hidden">
+      <div className="sticky top-0 h-screen flex flex-col overflow-x-hidden overflow-y-visible">
         {/* BG effects */}
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_bottom_right,_rgba(0,200,255,0.04)_0%,_transparent_50%)]" />
 
@@ -121,10 +138,10 @@ export function Projects() {
           </motion.div>
         </div>
 
-        {/* Horizontal scroll */}
-        <div className="flex-1 flex items-center overflow-hidden">
+        {/* Horizontal scroll track */}
+        <div className="flex-1 flex items-center overflow-x-hidden overflow-y-visible py-10">
           <motion.div
-            className="flex gap-6 md:gap-8 pl-6 md:pl-12 lg:pl-20 pr-[30vw]"
+            className="flex gap-8 pl-6 md:pl-12 lg:pl-20 pr-[30vw] -translate-y-2 md:-translate-y-4"
             style={{ x }}
           >
             {projects.map((project, index) => (
@@ -133,7 +150,7 @@ export function Projects() {
           </motion.div>
         </div>
 
-        {/* Scroll progress */}
+        {/* Scroll progress bar */}
         <div className="px-6 md:px-12 lg:px-20 pb-8">
           <div className="h-[1px] bg-white/10 max-w-md">
             <motion.div
@@ -156,17 +173,17 @@ function ProjectCard({
 }) {
   return (
     <motion.div
-      className="group relative flex-shrink-0 w-[75vw] md:w-[50vw] lg:w-[40vw] max-w-[600px]"
+      className="group relative flex-shrink-0 w-[68vw] md:w-[44vw] lg:w-[32vw] max-w-[520px]"
       initial={{ opacity: 0, y: 40 }}
       whileInView={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.6, delay: index * 0.05 }}
       viewport={{ once: true }}
     >
-      <div className="relative aspect-[16/10] rounded-xl overflow-hidden mb-5 bg-white/5 border border-white/[0.06]">
+      <div className="relative aspect-[16/9] rounded-xl overflow-hidden mb-4 bg-white/5 border border-white/[0.06]">
         <ImageWithFallback
           src={project.image}
           alt={project.title}
-          className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+          className="w-full h-full object-cover object-top transition-transform duration-700 group-hover:scale-105"
         />
         <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
 
@@ -179,13 +196,15 @@ function ProjectCard({
             <span className="absolute inset-0 rounded-full bg-black/40 backdrop-blur-xl border border-white/10 hover:border-cyan-400/30 transition-all duration-300" />
             <Github className="relative z-10 w-4 h-4 text-white/80" />
           </a>
-          <a
-            href={project.live}
-            className="relative p-2.5 rounded-full overflow-hidden isolate transition-all duration-300 hover:shadow-[0_0_16px_rgba(0,200,255,0.15)]"
-          >
-            <span className="absolute inset-0 rounded-full bg-black/40 backdrop-blur-xl border border-white/10 hover:border-cyan-400/30 transition-all duration-300" />
-            <ExternalLink className="relative z-10 w-4 h-4 text-white/80" />
-          </a>
+          {index !== projects.length - 1 && (
+            <a
+              href={project.live}
+              className="relative p-2.5 rounded-full overflow-hidden isolate transition-all duration-300 hover:shadow-[0_0_16px_rgba(0,200,255,0.15)]"
+            >
+              <span className="absolute inset-0 rounded-full bg-black/40 backdrop-blur-xl border border-white/10 hover:border-cyan-400/30 transition-all duration-300" />
+              <ExternalLink className="relative z-10 w-4 h-4 text-white/80" />
+            </a>
+          )}
         </div>
 
         <div className="absolute top-4 left-4 text-white/8 text-6xl font-[Space_Grotesk] leading-none">
