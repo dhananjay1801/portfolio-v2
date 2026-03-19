@@ -9,8 +9,30 @@ import { Certifications } from "./components/Certifications";
 import { Publications } from "./components/Publications";
 import { Contact } from "./components/Contact";
 import SplashCursor from "./components/SplashCursor";
+import { useEffect } from "react";
+import Lenis from "lenis";
 
 export default function App() {
+  useEffect(() => {
+    const lenis = new Lenis({
+      // Keep defaults; just smooth wheel/touch scrolling
+      smoothWheel: true,
+      smoothTouch: false,
+    });
+
+    let rafId = 0;
+    const raf = (time: number) => {
+      lenis.raf(time);
+      rafId = requestAnimationFrame(raf);
+    };
+    rafId = requestAnimationFrame(raf);
+
+    return () => {
+      cancelAnimationFrame(rafId);
+      lenis.destroy();
+    };
+  }, []);
+
   return (
     <div className="bg-black text-white selection:bg-cyan-500/30 selection:text-white">
       <SplashCursor />

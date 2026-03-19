@@ -23,14 +23,14 @@ export function Hero() {
         {/* Antigravity particle background */}
         <motion.div className="absolute inset-x-0 -top-[300px] bottom-0 h-[calc(100%+300px)]" style={{ y: bgY }}>
           <Antigravity
-            count={500}
+            count={600}
             magnetRadius={6}
             ringRadius={5}
             waveSpeed={0.4}
             waveAmplitude={1}
             particleSize={0.5}
             lerpSpeed={0.05}
-            color="#5227FF"
+            color="#ffffff"
             autoAnimate
             particleVariance={1}
             rotationSpeed={0}

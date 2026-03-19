@@ -64,6 +64,16 @@ const projects = [
     github: "#",
     live: "#",
   },
+  {
+    title: "More on GitHub",
+    description:
+      "Want to see more? Explore the rest of my work, experiments, and open-source projects on GitHub.",
+    tags: ["Open Source", "Repositories", "More Projects"],
+    image:
+      "https://images.unsplash.com/photo-1618401471353-b98afee0b2eb?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxnaXRodWIlMjBkYXJrJTIwY29kZXxlbnwxfHx8fDE3NzI4OTg3OTF8MA&ixlib=rb-4.1.0&q=80&w=1080",
+    github: "https://github.com/yourusername",
+    live: "https://github.com/yourusername",
+  },
 ];
 
 export function Projects() {
