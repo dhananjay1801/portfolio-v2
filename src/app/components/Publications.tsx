@@ -1,43 +1,17 @@
 import { motion, useScroll, useTransform } from "motion/react";
 import { useRef } from "react";
-import { ExternalLink } from "lucide-react";
+import { AceternityLogo, HoverBorderGradient } from "@/components/ui/hover-border-gradient";
 
 const publications = [
   {
-    title: "Modern Web Architecture: Patterns and Best Practices",
-    journal: "Tech Journal of Software Engineering",
-    date: "March 2024",
-    authors: "Your Name, et al.",
+    title: "A Comprehensive Study on Secure Shell: Remote Infused with AI/ML",
+    journal: "IJSAT",
+    date: "2025",
+    authors: "Dhananjay Tailor",
     abstract:
-      "An in-depth exploration of contemporary web architecture patterns, including microservices, serverless computing, and edge computing paradigms.",
-    link: "#",
-  },
-  {
-    title: "Optimizing React Performance in Large-Scale Applications",
-    journal: "Frontend Development Quarterly",
-    date: "December 2023",
-    authors: "Your Name",
-    abstract:
-      "Comprehensive guide to performance optimization techniques in React applications, covering code splitting, lazy loading, and rendering optimization.",
-    link: "#",
-  },
-  {
-    title: "Building Accessible Web Applications: A Developer's Guide",
-    journal: "Web Standards Magazine",
-    date: "August 2023",
-    authors: "Your Name, Co-Author Name",
-    abstract:
-      "Practical approaches to implementing WCAG 2.1 guidelines in modern web applications with real-world examples and testing strategies.",
-    link: "#",
-  },
-  {
-    title: "The Future of CSS: Container Queries and Beyond",
-    journal: "CSS-Tricks Blog",
-    date: "May 2023",
-    authors: "Your Name",
-    abstract:
-      "Exploring upcoming CSS features and their impact on responsive web design, with particular focus on container queries and cascade layers.",
-    link: "#",
+      "Research on Secure Shell (SSH) enhanced with AI/ML approaches for remote systems.",
+    preprintLink: "https://dhananjaytailor.in/Research_Paper.pdf",
+    publishedLink: "https://www.ijsat.org/research-paper.php?id=8143",
   },
 ];
 
@@ -73,9 +47,8 @@ export function Publications() {
             const start = 0.08 + index * 0.1;
             const end = start + 0.12;
             return (
-              <motion.a
+              <motion.div
                 key={pub.title}
-                href={pub.link}
                 className="group block"
                 style={{
                   opacity: useTransform(scrollYProgress, [start, end], [0, 1]),
@@ -87,29 +60,49 @@ export function Publications() {
                     {String(index + 1).padStart(2, "0")}
                   </div>
 
-                  <div className="flex items-start gap-4">
+                  <div className="flex flex-col gap-4 md:flex-row md:items-start md:gap-6">
                     <div className="flex-1">
-                      <div className="flex items-start justify-between gap-4 mb-2">
-                        <h3 className="text-lg md:text-xl text-white/80 font-[Space_Grotesk] tracking-tight group-hover:text-white transition-colors pr-12">
-                          {pub.title}
-                        </h3>
-                      </div>
+                      <h3 className="text-lg md:text-xl text-white/80 font-[Space_Grotesk] tracking-tight group-hover:text-white transition-colors pr-12 mb-2">
+                        {pub.title}
+                      </h3>
                       <div className="flex items-center gap-3 mb-3 text-xs font-[Space_Grotesk]">
                         <span className="text-cyan-400/50">{pub.journal}</span>
                         <span className="text-white/10">|</span>
                         <span className="text-white/25">{pub.date}</span>
                       </div>
-                      <p className="text-white/30 text-sm font-[Inter] leading-relaxed line-clamp-2">
+                      <p className="text-white/30 text-sm font-[Inter] leading-relaxed">
                         {pub.abstract}
                       </p>
-                      <p className="text-white/20 text-xs font-[Inter] mt-3">
-                        {pub.authors}
-                      </p>
+                      <p className="text-white/20 text-xs font-[Inter] mt-3">{pub.authors}</p>
                     </div>
-                    <ExternalLink className="w-4 h-4 text-white/10 group-hover:text-cyan-400/60 transition-colors flex-shrink-0 mt-1" />
+
+                    <div className="flex flex-col gap-2 md:items-end shrink-0">
+                      <HoverBorderGradient
+                        as="a"
+                        href={pub.preprintLink}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        containerClassName="rounded-full"
+                        className="gap-2 px-4 py-1.5 text-xs font-[Space_Grotesk] uppercase tracking-[0.18em] flex items-center space-x-2 text-cyan-300"
+                      >
+                        <AceternityLogo className="text-cyan-300" />
+                        <span>Preprint</span>
+                      </HoverBorderGradient>
+                      <HoverBorderGradient
+                        as="a"
+                        href={pub.publishedLink}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        containerClassName="rounded-full"
+                        className="gap-2 px-4 py-1.5 text-xs font-[Space_Grotesk] uppercase tracking-[0.18em] flex items-center space-x-2"
+                      >
+                        <AceternityLogo />
+                        <span>Published</span>
+                      </HoverBorderGradient>
+                    </div>
                   </div>
                 </div>
-              </motion.a>
+              </motion.div>
             );
           })}
         </div>

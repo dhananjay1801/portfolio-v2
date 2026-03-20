@@ -235,3 +235,12 @@
     @apply font-sans;
     }
 }
+
+@keyframes spin_2s_linear_infinite {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}

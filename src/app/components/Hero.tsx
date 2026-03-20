@@ -1,5 +1,6 @@
 import { motion, useScroll, useTransform } from "motion/react";
 import { useRef } from "react";
+import { AceternityLogo, HoverBorderGradient } from "@/components/ui/hover-border-gradient";
 import Antigravity from "./Antigravity";
 import { HeroNameRope } from "./HeroNameRope";
 import Magnet from "./Magnet";
@@ -94,23 +95,26 @@ export function Hero() {
             transition={{ duration: 0.8, delay: 1.2 }}
           >
             <Magnet padding={50} magnetStrength={3} maxOffset={6}>
-              <a
+              <HoverBorderGradient
+                as="a"
                 href="#projects"
-                className="group/btn relative px-7 py-2.5 rounded-full text-sm font-[Space_Grotesk] tracking-wider uppercase overflow-hidden isolate transition-all duration-500 hover:shadow-[0_0_40px_rgba(0,200,255,0.15),inset_0_0_40px_rgba(0,200,255,0.05)]"
+                containerClassName="rounded-full"
+                className="h-12 px-7 text-sm font-medium font-[Space_Grotesk] tracking-wider uppercase flex items-center space-x-2"
               >
-                <span className="absolute inset-0 rounded-full bg-gradient-to-r from-cyan-500/20 via-blue-500/20 to-cyan-500/20 border border-cyan-400/25 group-hover/btn:border-cyan-400/50 transition-all duration-500" />
-                <span className="absolute inset-0 rounded-full opacity-0 group-hover/btn:opacity-100 transition-opacity duration-500 bg-[radial-gradient(circle_at_50%_50%,rgba(0,200,255,0.12),transparent_70%)]" />
-                <span className="relative z-10 text-cyan-300 group-hover/btn:text-white transition-colors duration-300">View Projects</span>
-              </a>
+                <AceternityLogo />
+                <span>View Projects</span>
+              </HoverBorderGradient>
             </Magnet>
             <Magnet padding={50} magnetStrength={3} maxOffset={6}>
-              <a
+              <HoverBorderGradient
+                as="a"
                 href="#contact"
-                className="group/btn relative px-7 py-2.5 rounded-full text-sm font-[Space_Grotesk] tracking-wider uppercase overflow-hidden isolate transition-all duration-500 hover:shadow-[0_0_30px_rgba(255,255,255,0.04)]"
+                containerClassName="rounded-full"
+                className="h-12 px-7 text-sm font-medium font-[Space_Grotesk] tracking-wider uppercase flex items-center space-x-2"
               >
-                <span className="absolute inset-0 rounded-full border border-white/[0.08] group-hover/btn:border-white/20 bg-white/[0.02] group-hover/btn:bg-white/[0.05] backdrop-blur-sm transition-all duration-500" />
-                <span className="relative z-10 text-white/40 group-hover/btn:text-white/80 transition-colors duration-300">Contact</span>
-              </a>
+                <AceternityLogo />
+                <span>Contact</span>
+              </HoverBorderGradient>
             </Magnet>
           </motion.div>
 

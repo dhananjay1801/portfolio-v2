@@ -82,8 +82,8 @@ const projects = [
 // We express the x transform in %, where 100% = full track width
 // Simplest: express end position in vw so it's viewport-relative and matches card sizes exactly
 
-const CARD_WIDTH_VW = 40; // lg:w-[40vw]
-const GAP_VW = 2.5;       // gap-8 ≈ 2rem, ~2.5vw on average screen
+const CARD_WIDTH_VW = 34; // slightly smaller card width for a tighter layout
+const GAP_VW = 2.25;      // matches the reduced visual gap
 const PADDING_LEFT_VW = 5; // lg:pl-20 ≈ 5vw
 
 // How many vw units we need to scroll to bring the last card into view
@@ -139,9 +139,9 @@ export function Projects() {
         </div>
 
         {/* Horizontal scroll track */}
-        <div className="flex-1 flex items-center overflow-x-hidden overflow-y-visible py-10">
+        <div className="flex-1 flex items-center overflow-x-hidden overflow-y-visible py-6 md:py-8">
           <motion.div
-            className="flex gap-8 pl-6 md:pl-12 lg:pl-20 pr-[30vw] -translate-y-2 md:-translate-y-4"
+            className="flex gap-6 md:gap-7 pl-6 md:pl-12 lg:pl-20 pr-[24vw] -translate-y-8 md:-translate-y-14"
             style={{ x }}
           >
             {projects.map((project, index) => (
@@ -173,7 +173,7 @@ function ProjectCard({
 }) {
   return (
     <motion.div
-      className="group relative flex-shrink-0 w-[68vw] md:w-[44vw] lg:w-[32vw] max-w-[520px]"
+      className="group relative flex-shrink-0 w-[60vw] md:w-[40vw] lg:w-[28vw] max-w-[440px]"
       initial={{ opacity: 0, y: 40 }}
       whileInView={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.6, delay: index * 0.05 }}
@@ -191,18 +191,22 @@ function ProjectCard({
         <div className="absolute bottom-4 right-4 flex gap-2.5 opacity-0 group-hover:opacity-100 transition-all duration-500 translate-y-3 group-hover:translate-y-0">
           <a
             href={project.github}
-            className="relative p-2.5 rounded-full overflow-hidden isolate transition-all duration-300 hover:shadow-[0_0_16px_rgba(0,200,255,0.15)]"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="flex h-11 w-11 items-center justify-center rounded-full border border-white/15 bg-black/55 text-white/85 backdrop-blur-md transition-all duration-300 hover:border-cyan-400/35 hover:bg-black/70 hover:text-white hover:shadow-[0_0_20px_rgba(0,200,255,0.12)]"
+            aria-label="View on GitHub"
           >
-            <span className="absolute inset-0 rounded-full bg-black/40 backdrop-blur-xl border border-white/10 hover:border-cyan-400/30 transition-all duration-300" />
-            <Github className="relative z-10 w-4 h-4 text-white/80" />
+            <Github className="h-4 w-4" />
           </a>
           {index !== projects.length - 1 && (
             <a
               href={project.live}
-              className="relative p-2.5 rounded-full overflow-hidden isolate transition-all duration-300 hover:shadow-[0_0_16px_rgba(0,200,255,0.15)]"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex h-11 w-11 items-center justify-center rounded-full border border-white/15 bg-black/55 text-white/85 backdrop-blur-md transition-all duration-300 hover:border-cyan-400/35 hover:bg-black/70 hover:text-white hover:shadow-[0_0_20px_rgba(0,200,255,0.12)]"
+              aria-label="Open live site"
             >
-              <span className="absolute inset-0 rounded-full bg-black/40 backdrop-blur-xl border border-white/10 hover:border-cyan-400/30 transition-all duration-300" />
-              <ExternalLink className="relative z-10 w-4 h-4 text-white/80" />
+              <ExternalLink className="h-4 w-4" />
             </a>
           )}
         </div>
