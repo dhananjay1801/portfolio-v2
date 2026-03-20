@@ -141,7 +141,7 @@ export function Projects() {
         {/* Horizontal scroll track */}
         <div className="flex-1 flex items-center overflow-x-hidden overflow-y-visible py-6 md:py-8">
           <motion.div
-            className="flex gap-6 md:gap-7 pl-6 md:pl-12 lg:pl-20 pr-[24vw] -translate-y-8 md:-translate-y-14"
+            className="-translate-y-2 md:-translate-y-3 flex gap-6 md:gap-7 pl-6 md:pl-12 lg:pl-20 pr-[24vw]"
             style={{ x }}
           >
             {projects.map((project, index) => (

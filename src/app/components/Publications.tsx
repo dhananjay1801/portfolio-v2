@@ -23,7 +23,7 @@ export function Publications() {
   });
 
   return (
-    <section ref={containerRef} className="relative py-32 md:py-48 bg-black overflow-hidden">
+    <section ref={containerRef} className="relative pt-4 pb-32 md:pt-8 md:pb-48 bg-black overflow-hidden">
       <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_bottom,_rgba(0,200,255,0.03)_0%,_transparent_50%)]" />
 
       <div className="relative z-10 container mx-auto px-6 md:px-12 lg:px-20">

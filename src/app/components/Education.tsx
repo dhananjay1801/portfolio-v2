@@ -24,8 +24,6 @@ export function Education() {
       style={{ height: "250vh" }}
     >
       <div className="sticky top-0 h-screen flex flex-col overflow-hidden">
-        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_rgba(0,200,255,0.04)_0%,_transparent_60%)]" />
-
         <div className="relative z-10 pt-12 md:pt-16 px-6 md:px-12 lg:px-20 shrink-0">
           <motion.div
             style={{

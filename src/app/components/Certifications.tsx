@@ -63,7 +63,7 @@ export function Certifications() {
   });
 
   return (
-    <section ref={containerRef} className="relative overflow-hidden bg-black py-28 md:py-36">
+    <section ref={containerRef} className="relative overflow-hidden bg-black pt-28 pb-2 md:pt-36 md:pb-4">
       <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_rgba(100,50,255,0.04)_0%,_transparent_60%)]" />
 
       <div className="relative z-10 px-6 md:px-12 lg:px-20">
