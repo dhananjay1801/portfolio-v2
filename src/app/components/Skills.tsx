@@ -266,6 +266,7 @@ export function Skills() {
               speed={0.1}
               particleBaseSize={100}
               moveParticlesOnHover
+              particleHoverFactor={2.5}
               alphaParticles={false}
               disableRotation={false}
               pixelRatio={1}

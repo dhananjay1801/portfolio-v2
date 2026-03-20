@@ -128,15 +128,23 @@ const Particles = ({
     window.addEventListener('resize', resize, false);
     resize();
 
+    const clamp = (v, min, max) => Math.min(max, Math.max(min, v));
+
+    /**
+     * Skills (and similar) wrap this layer in `pointer-events-none` so UI above stays clickable.
+     * The container never receives `mousemove` — listen on `window` and map to this rect (React Bits pattern).
+     */
     const handleMouseMove = e => {
       const rect = container.getBoundingClientRect();
-      const x = ((e.clientX - rect.left) / rect.width) * 2 - 1;
-      const y = -(((e.clientY - rect.top) / rect.height) * 2 - 1);
+      const w = rect.width || 1;
+      const h = rect.height || 1;
+      const x = clamp(((e.clientX - rect.left) / w) * 2 - 1, -1, 1);
+      const y = -clamp(((e.clientY - rect.top) / h) * 2 - 1, -1, 1);
       mouseRef.current = { x, y };
     };
 
     if (moveParticlesOnHover) {
-      container.addEventListener('mousemove', handleMouseMove);
+      window.addEventListener('mousemove', handleMouseMove, { passive: true });
     }
 
     const count = particleCount;
@@ -216,7 +224,7 @@ const Particles = ({
     return () => {
       window.removeEventListener('resize', resize);
       if (moveParticlesOnHover) {
-        container.removeEventListener('mousemove', handleMouseMove);
+        window.removeEventListener('mousemove', handleMouseMove);
       }
       cancelAnimationFrame(animationFrameId);
       if (container.contains(gl.canvas)) {
