@@ -6,7 +6,7 @@ import {
   useSpring,
 } from "motion/react";
 import { useEffect, useRef, useState } from "react";
-import Particles from "../../components/Particles";
+import Shuffle from "./Shuffle";
 
 const skillGroups = [
   {
@@ -252,28 +252,11 @@ export function Skills() {
   return (
     <section
       ref={containerRef}
-      className="relative bg-black"
+      className="relative bg-transparent"
       style={{ height: "500vh" }}
     >
       <div className="sticky top-0 h-screen overflow-clip">
         <div className="relative h-screen w-screen flex flex-col">
-          {/* Particles background (100vw x 100vh) */}
-          <div className="absolute inset-0 z-0 pointer-events-none">
-            <Particles
-              particleColors={["#ffffff"]}
-              particleCount={200}
-              particleSpread={10}
-              speed={0.1}
-              particleBaseSize={100}
-              moveParticlesOnHover
-              particleHoverFactor={2.5}
-              alphaParticles={false}
-              disableRotation={false}
-              pixelRatio={1}
-              className="w-full h-full"
-            />
-          </div>
-
           {/* Header */}
           <div className="relative z-10 pt-20 md:pt-24 px-6 md:px-12 lg:px-20">
             <motion.div
@@ -285,15 +268,17 @@ export function Skills() {
               <span className="text-white/30 text-xs tracking-[0.3em] uppercase font-[Space_Grotesk] block mb-4">
                 02 / Skills
               </span>
-              <h2 className="text-4xl md:text-5xl text-white/90 font-[Space_Grotesk] tracking-tight">
-                Skill Orbit
-              </h2>
+              <Shuffle
+                text="Skill Orbit"
+                textAlign="left"
+                className="text-4xl md:text-5xl text-white/90 font-[Space_Grotesk] tracking-tight block"
+              />
             </motion.div>
           </div>
 
         {/* Skills appear one by one, collect together, then zoom away together */}
         <div
-          className="absolute inset-0 z-10 flex items-center justify-center overflow-clip pb-[25vh] px-6"
+          className="absolute inset-0 z-10 pointer-events-none flex items-center justify-center overflow-clip pb-[25vh] px-6"
           style={{ perspective: 1200, transformStyle: "preserve-3d" }}
         >
           {skillGroups.map((group, gi) => (

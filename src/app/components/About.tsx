@@ -1,6 +1,7 @@
 import { motion, useScroll, useTransform } from "motion/react";
 import { useRef } from "react";
 import ProfileCard from "./ProfileCard";
+import Shuffle from "./Shuffle";
 
 const words = [
   "I'm", "a", "passionate", "developer", "with", "a", "keen", "eye", "for", "design",
@@ -60,6 +61,11 @@ export function About() {
             <span className="text-white/30 text-xs tracking-[0.3em] uppercase font-[Space_Grotesk]">
               01 / About
             </span>
+            <Shuffle
+              text="Behind the Build"
+              textAlign="left"
+              className="mt-3 text-4xl md:text-5xl text-white/90 font-[Space_Grotesk] tracking-tight block"
+            />
           </motion.div>
 
           <div className="flex items-start gap-12 lg:gap-20">

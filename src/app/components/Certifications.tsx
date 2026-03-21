@@ -2,6 +2,7 @@ import { motion, useScroll, useTransform } from "motion/react";
 import { useRef } from "react";
 
 import CircularGallery from "../../components/CircularGallery";
+import Shuffle from "./Shuffle";
 
 const certifications = [
   {
@@ -63,7 +64,7 @@ export function Certifications() {
   });
 
   return (
-    <section ref={containerRef} className="relative overflow-hidden bg-black pt-28 pb-2 md:pt-36 md:pb-4">
+    <section ref={containerRef} className="relative overflow-hidden bg-transparent pt-28 pb-2 md:pt-36 md:pb-4">
       <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_rgba(100,50,255,0.04)_0%,_transparent_60%)]" />
 
       <div className="relative z-10 px-6 md:px-12 lg:px-20">
@@ -77,9 +78,11 @@ export function Certifications() {
           <span className="mb-4 block text-xs uppercase tracking-[0.3em] text-white/30 font-[Space_Grotesk]">
             06 / Certifications
           </span>
-          <h2 className="text-4xl md:text-5xl text-white/90 font-[Space_Grotesk] tracking-tight">
-            Credentials Gallery
-          </h2>
+          <Shuffle
+            text="Credentials Gallery"
+            textAlign="left"
+            className="text-4xl md:text-5xl text-white/90 font-[Space_Grotesk] tracking-tight block"
+          />
         </motion.div>
 
         <motion.p

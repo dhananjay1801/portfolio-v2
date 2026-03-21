@@ -1,6 +1,7 @@
 import { motion, useScroll, useTransform, useMotionValueEvent } from "motion/react";
 import { useRef, useState, useMemo, useEffect } from "react";
 import * as THREE from "three";
+import Shuffle from "./Shuffle";
 
 const experiences = [
   {
@@ -310,14 +311,18 @@ export function Experience() {
   });
 
   return (
-    <section ref={containerRef} className="relative bg-black" style={{ height: `${(experiences.length + 1) * 100}vh` }}>
+    <section ref={containerRef} className="relative bg-transparent" style={{ height: `${(experiences.length + 1) * 100}vh` }}>
       <div className="sticky top-0 h-screen overflow-hidden">
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_rgba(59,130,246,0.03)_0%,_transparent_60%)]" />
 
         <div className="relative z-20 pt-16 md:pt-20 px-6 md:px-12 lg:px-20">
           <motion.div style={{ opacity: useTransform(scrollYProgress, [0, 0.08], [0, 1]), y: useTransform(scrollYProgress, [0, 0.08], [40, 0]) }}>
             <span className="text-white/25 text-xs tracking-[0.35em] uppercase font-mono block mb-4">03 / Experience</span>
-            <h2 className="text-4xl md:text-5xl text-white/85 font-[Space_Grotesk] tracking-tight">Career Path</h2>
+            <Shuffle
+              text="Career Path"
+              textAlign="left"
+              className="text-4xl md:text-5xl text-white/85 font-[Space_Grotesk] tracking-tight block"
+            />
           </motion.div>
         </div>
 

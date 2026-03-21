@@ -1,5 +1,6 @@
 import { motion, useScroll, useSpring, useTransform } from "motion/react";
 import { useRef } from "react";
+import Shuffle from "./Shuffle";
 
 export function Education() {
   const containerRef = useRef(null);
@@ -20,7 +21,7 @@ export function Education() {
   return (
     <section
       ref={containerRef}
-      className="relative bg-black"
+      className="relative bg-transparent"
       style={{ height: "250vh" }}
     >
       <div className="sticky top-0 h-screen flex flex-col overflow-hidden">
@@ -34,9 +35,11 @@ export function Education() {
             <span className="text-white/30 text-xs tracking-[0.3em] uppercase font-[Space_Grotesk] block mb-3">
               05 / Education
             </span>
-            <h2 className="text-4xl md:text-5xl text-white/90 font-[Space_Grotesk] tracking-tight">
-              Academic Background
-            </h2>
+            <Shuffle
+              text="Academic Background"
+              textAlign="left"
+              className="text-4xl md:text-5xl text-white/90 font-[Space_Grotesk] tracking-tight block"
+            />
           </motion.div>
         </div>
 

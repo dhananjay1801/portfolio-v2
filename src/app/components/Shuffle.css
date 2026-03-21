@@ -1,0 +1,11 @@
+.shuffle-parent {
+  /* Keep whatever display the Tailwind class sets (inline / block). */
+  position: relative;
+}
+
+.shuffle-char,
+.shuffle-word,
+.shuffle-line {
+  display: inline-block;
+}
+

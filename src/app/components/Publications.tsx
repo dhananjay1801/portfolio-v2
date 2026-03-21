@@ -1,6 +1,7 @@
 import { motion, useScroll, useTransform } from "motion/react";
 import { useRef } from "react";
 import { AceternityLogo, HoverBorderGradient } from "@/components/ui/hover-border-gradient";
+import Shuffle from "./Shuffle";
 
 const publications = [
   {
@@ -23,7 +24,7 @@ export function Publications() {
   });
 
   return (
-    <section ref={containerRef} className="relative pt-4 pb-32 md:pt-8 md:pb-48 bg-black overflow-hidden">
+    <section ref={containerRef} className="relative pt-4 pb-32 md:pt-8 md:pb-48 bg-transparent overflow-hidden">
       <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_bottom,_rgba(0,200,255,0.03)_0%,_transparent_50%)]" />
 
       <div className="relative z-10 container mx-auto px-6 md:px-12 lg:px-20">
@@ -37,9 +38,11 @@ export function Publications() {
           <span className="text-white/30 text-xs tracking-[0.3em] uppercase font-[Space_Grotesk] block mb-4">
             07 / Publications
           </span>
-          <h2 className="text-4xl md:text-5xl text-white/90 font-[Space_Grotesk] tracking-tight">
-            Writing & Research
-          </h2>
+          <Shuffle
+            text="Writing & Research"
+            textAlign="left"
+            className="text-4xl md:text-5xl text-white/90 font-[Space_Grotesk] tracking-tight block"
+          />
         </motion.div>
 
         <div className="max-w-4xl mx-auto space-y-6">

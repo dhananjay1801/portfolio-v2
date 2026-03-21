@@ -2,6 +2,7 @@ import { motion, useScroll, useTransform } from "motion/react";
 import { useRef } from "react";
 import { ExternalLink, Github } from "lucide-react";
 import { ImageWithFallback } from "./figma/ImageWithFallback";
+import Shuffle from "./Shuffle";
 
 const projects = [
   {
@@ -109,7 +110,7 @@ export function Projects() {
   return (
     <section
       ref={containerRef}
-      className="relative bg-black"
+      className="relative bg-transparent"
       style={{ height: `${SECTION_HEIGHT_VH}vh` }}
     >
       <div className="sticky top-0 h-screen flex flex-col overflow-x-hidden overflow-y-visible">
@@ -128,9 +129,11 @@ export function Projects() {
               04 / Projects
             </span>
             <div className="flex items-baseline gap-6">
-              <h2 className="text-4xl md:text-5xl text-white/90 font-[Space_Grotesk] tracking-tight">
-                Selected work
-              </h2>
+              <Shuffle
+                text="Selected work"
+                textAlign="left"
+                className="text-4xl md:text-5xl text-white/90 font-[Space_Grotesk] tracking-tight block"
+              />
               <span className="text-white/20 text-sm font-[Space_Grotesk]">
                 ({projects.length})
               </span>

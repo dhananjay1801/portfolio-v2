@@ -103,7 +103,6 @@ export default function CircularGallery({
   bend = 1,
   scrollSpeed = 2,
   scrollEase = 0.05,
-  // Optional props (used by Certifications section).
   textColor = "#ffffff",
   borderRadius = 0.05,
 }) {

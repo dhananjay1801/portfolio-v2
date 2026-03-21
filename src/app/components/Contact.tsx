@@ -1,3 +1,5 @@
+"use client";
+
 import { motion, useScroll, useTransform } from "motion/react";
 import { useRef } from "react";
 import { Mail, Download, ArrowUpRight } from "lucide-react";
@@ -5,7 +7,6 @@ import { AceternityLogo, HoverBorderGradient } from "@/components/ui/hover-borde
 import Magnet from "./Magnet";
 import { ContactTitleRope } from "./ContactTitleRope";
 
-// SVGs extracted from your old portfolio (`dhananjaytailor.in`) so the buttons use the official marks.
 function GitHubLogo(props: { className?: string }) {
   return (
     <svg
@@ -90,23 +91,18 @@ const socialLinks = [
 ];
 
 export function Contact() {
-  const containerRef = useRef(null);
+  const containerRef = useRef<HTMLElement>(null);
   const { scrollYProgress } = useScroll({
     target: containerRef,
     offset: ["start end", "end end"],
   });
 
-  const titleScale = useTransform(scrollYProgress, [0, 0.5], [0.6, 1]);
-  const titleOpacity = useTransform(scrollYProgress, [0, 0.4], [0, 1]);
-
   return (
-    <section ref={containerRef} className="relative min-h-[150vh] bg-black">
+    <section ref={containerRef} className="relative min-h-[150vh] bg-transparent">
       <div className="sticky top-0 h-screen flex flex-col items-center justify-center overflow-visible">
-        {/* BG effects */}
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_rgba(0,200,255,0.08)_0%,_transparent_70%)]" />
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_bottom_left,_rgba(100,50,255,0.06)_0%,_transparent_50%)]" />
 
-        {/* Particle accents */}
         <div className="absolute inset-0 overflow-hidden pointer-events-none">
           {Array.from({ length: 15 }).map((_, i) => (
             <motion.div
@@ -130,26 +126,30 @@ export function Contact() {
         </div>
 
         <div className="relative z-10 w-full max-w-4xl mx-auto px-6 md:px-12 text-center">
-          <motion.div style={{ scale: titleScale, opacity: titleOpacity }}>
+          <motion.div
+            style={{
+              opacity: useTransform(scrollYProgress, [0, 0.15], [0, 1]),
+            }}
+          >
             <span className="text-white/30 text-xs tracking-[0.3em] uppercase font-[Space_Grotesk] block mb-8">
               08 / Contact
             </span>
-
             <div className="flex justify-center">
               <ContactTitleRope containerRef={containerRef} />
             </div>
           </motion.div>
 
           <motion.div
+            className="mt-3 md:mt-5"
             style={{
-              opacity: useTransform(scrollYProgress, [0.3, 0.5], [0, 1]),
-              y: useTransform(scrollYProgress, [0.3, 0.5], [30, 0]),
+              opacity: useTransform(scrollYProgress, [0.4, 0.6], [0, 1]),
+              y: useTransform(scrollYProgress, [0.4, 0.6], [30, 0]),
             }}
           >
             <Magnet padding={50} magnetStrength={3}>
               <HoverBorderGradient
                 as="a"
-                href="mailto:your.email@example.com"
+                href="mailto:dhananjaytailor18@gmail.com"
                 containerClassName="rounded-full mb-12 transition-all duration-500 hover:shadow-[0_0_30px_rgba(0,200,255,0.06)]"
                 className="h-12 gap-2 px-6 text-sm font-medium flex items-center space-x-2"
               >
@@ -163,11 +163,10 @@ export function Contact() {
             </Magnet>
           </motion.div>
 
-          {/* Social links */}
           <motion.div
             className="flex flex-col items-center gap-4 mt-8"
             style={{
-              opacity: useTransform(scrollYProgress, [0.4, 0.6], [0, 1]),
+              opacity: useTransform(scrollYProgress, [0.5, 0.7], [0, 1]),
             }}
           >
             <div className="flex flex-wrap justify-center gap-3 md:gap-4">
@@ -195,7 +194,6 @@ export function Contact() {
               ))}
             </div>
 
-            {/* Resume download */}
             <Magnet padding={50} magnetStrength={3}>
               <HoverBorderGradient
                 as="a"
@@ -212,7 +210,6 @@ export function Contact() {
           </motion.div>
         </div>
 
-        {/* Footer */}
         <motion.div
           className="absolute bottom-8 text-center"
           style={{

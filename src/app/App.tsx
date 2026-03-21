@@ -8,9 +8,9 @@ import { Education } from "./components/Education";
 import { Certifications } from "./components/Certifications";
 import { Publications } from "./components/Publications";
 import { Contact } from "./components/Contact";
-import SplashCursor from "./components/SplashCursor";
 import { useEffect } from "react";
 import Lenis from "lenis";
+import Particles from "../components/Particles";
 
 export default function App() {
   useEffect(() => {
@@ -35,7 +35,6 @@ export default function App() {
 
   return (
     <div className="bg-black text-white selection:bg-cyan-500/30 selection:text-white">
-      <SplashCursor />
       <Navigation />
 
       <div id="hero">
@@ -46,32 +45,55 @@ export default function App() {
         <About />
       </div>
 
-      <div id="skills">
-        <Skills />
-      </div>
+      <div className="relative isolate">
+        <div className="pointer-events-none absolute inset-0">
+          <div className="sticky top-0 h-screen overflow-hidden">
+            <div className="absolute inset-0 z-0">
+              <Particles
+                particleColors={["#ffffff"]}
+                particleCount={200}
+                particleSpread={10}
+                speed={0.1}
+                particleBaseSize={100}
+                moveParticlesOnHover
+                particleHoverFactor={2.5}
+                alphaParticles={false}
+                disableRotation={false}
+                pixelRatio={1}
+                className="h-full w-full"
+              />
+            </div>
+            <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,_rgba(0,200,255,0.05)_0%,_transparent_45%),linear-gradient(180deg,rgba(0,0,0,0.02)_0%,rgba(0,0,0,0.12)_100%)]" />
+          </div>
+        </div>
 
-      <div id="experience">
-        <Experience />
-      </div>
+        <div id="skills" className="relative z-10">
+          <Skills />
+        </div>
 
-      <div id="projects">
-        <Projects />
-      </div>
+        <div id="experience" className="relative z-10">
+          <Experience />
+        </div>
 
-      <div id="education">
-        <Education />
-      </div>
+        <div id="projects" className="relative z-10">
+          <Projects />
+        </div>
 
-      <div id="certifications">
-        <Certifications />
-      </div>
+        <div id="education" className="relative z-10">
+          <Education />
+        </div>
 
-      <div id="publications">
-        <Publications />
-      </div>
+        <div id="certifications" className="relative z-10">
+          <Certifications />
+        </div>
 
-      <div id="contact">
-        <Contact />
+        <div id="publications" className="relative z-10">
+          <Publications />
+        </div>
+
+        <div id="contact" className="relative z-10">
+          <Contact />
+        </div>
       </div>
     </div>
   );

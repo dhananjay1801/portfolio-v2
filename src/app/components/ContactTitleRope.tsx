@@ -1,106 +1,73 @@
-import { gsap } from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
-import { useEffect, useRef } from "react";
+"use client";
 
-gsap.registerPlugin(ScrollTrigger);
+import { motion, useScroll, useTransform, MotionValue } from "motion/react";
+import { RefObject } from "react";
 
-const ROW1 = "Let's work".split("");
-const ROW2 = "together".split("");
+const row1 = ["Let's", "work"];
+const row2 = ["together!"];
 
-export function ContactTitleRope({ containerRef }: { containerRef: React.RefObject<HTMLElement | null> }) {
-  const wrapperRef = useRef<HTMLDivElement>(null);
-  const row1Ref = useRef<(HTMLSpanElement | null)[]>([]);
-  const row2Ref = useRef<(HTMLSpanElement | null)[]>([]);
+function AnimatedWord({
+  word,
+  index,
+  scrollYProgress,
+  className = "",
+}: {
+  word: string;
+  index: number;
+  scrollYProgress: MotionValue<number>;
+  className?: string;
+}) {
+  const start = 0.1 + index * 0.12;
+  const end = start + 0.2;
 
-  useEffect(() => {
-    const container = containerRef.current;
-    const wrapper = wrapperRef.current;
-    if (!container || !wrapper) return;
-
-    const letters1 = row1Ref.current.filter(Boolean) as HTMLSpanElement[];
-    const letters2 = row2Ref.current.filter(Boolean) as HTMLSpanElement[];
-    if (letters1.length === 0 && letters2.length === 0) return;
-
-    const allLetters = [...letters1, ...letters2];
-
-    const ctx = gsap.context(() => {
-      allLetters.forEach((el, i) => {
-        gsap.set(el, { opacity: 0, x: i % 2 === 0 ? -80 : 80, y: 30, scale: 0.5 });
-      });
-
-      const tl = gsap.timeline({ paused: true });
-      ScrollTrigger.create({
-        trigger: container,
-        start: "top 80%",
-        once: true,
-        onEnter: () => tl.play(),
-      });
-
-      letters1.forEach((el, i) => {
-        const fromLeft = i % 2 === 0;
-        tl.fromTo(
-          el,
-          { opacity: 0, x: fromLeft ? -80 : 80, y: 30, scale: 0.5 },
-          {
-            opacity: 1,
-            x: 0,
-            y: 0,
-            scale: 1,
-            duration: 1,
-            ease: "elastic.out(1, 0.5)",
-          },
-          i * 0.035
-        );
-      });
-      letters2.forEach((el, i) => {
-        const fromLeft = i % 2 === 0;
-        tl.fromTo(
-          el,
-          { opacity: 0, x: fromLeft ? -80 : 80, y: 30, scale: 0.5 },
-          {
-            opacity: 1,
-            x: 0,
-            y: 0,
-            scale: 1,
-            duration: 1,
-            ease: "elastic.out(1, 0.5)",
-          },
-          (letters1.length + i) * 0.035
-        );
-      });
-    }, wrapper);
-
-    return () => ctx.revert();
-  }, [containerRef]);
+  const y = useTransform(scrollYProgress, [start, end], ["-120%", "0%"]);
+  const opacity = useTransform(scrollYProgress, [start, start + 0.06], [0, 1]);
 
   return (
-    <div ref={wrapperRef} className="flex flex-col items-center overflow-visible mb-6">
-      <div className="flex flex-nowrap justify-center gap-0">
-        {ROW1.map((char, i) => (
-          <span
-            key={`1-${i}`}
-            ref={(el) => {
-              row1Ref.current[i] = el;
-            }}
-            className="inline-block font-[Poppins] text-[clamp(1.75rem,5vw,6rem)] tracking-tight leading-[0.9] will-change-transform text-white"
-            style={{ display: "inline-block", transformOrigin: "center center" }}
-          >
-            {char === " " ? "\u00A0" : char}
-          </span>
+    <div className="overflow-hidden">
+      <motion.span
+        style={{ y, opacity, display: "inline-block" }}
+        className={`text-6xl md:text-8xl font-bold font-[Space_Grotesk] leading-tight ${className}`}
+      >
+        {word}
+      </motion.span>
+    </div>
+  );
+}
+
+export function ContactTitleRope({
+  containerRef,
+}: {
+  containerRef: RefObject<HTMLElement>;
+}) {
+  const { scrollYProgress } = useScroll({
+    target: containerRef,
+    offset: ["start end", "end end"],
+  });
+
+  return (
+    <div className="flex flex-col items-center gap-y-0">
+      <div className="flex flex-wrap justify-center gap-x-6">
+        {row1.map((word, i) => (
+          <AnimatedWord
+            key={word}
+            word={word}
+            index={i}
+            scrollYProgress={scrollYProgress}
+            className="text-white"
+          />
         ))}
       </div>
-      <div className="flex flex-nowrap justify-center gap-0 overflow-visible min-h-[1.4em]">
-        {ROW2.map((char, i) => (
-          <span
-            key={`2-${i}`}
-            ref={(el) => {
-              row2Ref.current[i] = el;
-            }}
-            className="inline-block font-[Poppins] text-[clamp(1.75rem,5vw,4rem)] tracking-tight leading-[1.4] will-change-transform bg-gradient-to-r from-cyan-400 via-blue-400 to-purple-500 bg-clip-text text-transparent"
-            style={{ display: "inline-block", transformOrigin: "center center" }}
-          >
-            {char}
-          </span>
+
+      <div className="flex justify-center -mt-2">
+        {row2.map((word, i) => (
+          <AnimatedWord
+            key={word}
+            word={word}
+            index={row1.length + i}
+            scrollYProgress={scrollYProgress}
+            className="bg-gradient-to-r from-cyan-400 via-blue-400 to-purple-500 bg-clip-text text-transparent"
+          />
         ))}
       </div>
     </div>
