@@ -107,24 +107,24 @@ export function Education() {
 
               <div className="relative z-10 flex flex-col justify-between h-full p-7 md:p-9">
                 <div>
-                  <h3 className="text-white text-sm md:text-base tracking-[0.25em] uppercase font-[Space_Grotesk] font-medium">
-                    Bachelor of Science
+                  <h3 className="text-white text-sm md:text-lg tracking-[0.25em] uppercase font-[Space_Grotesk] font-medium">
+                    Bachelor of Technology
                   </h3>
-                  <p className="text-cyan-400/60 text-[11px] md:text-xs tracking-[0.15em] uppercase font-[Space_Grotesk] mt-1.5">
-                    Software Engineering
+                  <p className="text-cyan-400/60 text-[11px] md:text-sm tracking-[0.15em] uppercase font-[Space_Grotesk] mt-1.5">
+                    Computer Science & Engineering
                   </p>
                   <p className="text-white/70 text-xs tracking-[0.15em] uppercase font-[Space_Grotesk] mt-3">
-                    University Name · School of Engineering
+                    Parul Institute of Engineering & Technology, Parul University
                   </p>
                 </div>
 
                 <div className="flex items-end justify-between">
                   <div>
-                    <p className="text-white/90 text-sm md:text-[15px] tracking-[0.2em] uppercase font-[Space_Grotesk] font-medium">
-                      Your Name
+                    <p className="text-white/90 text-sm md:text-[16px] tracking-[0.2em] uppercase font-[Space_Grotesk] font-medium">
+                      Vadodara, Gujarat
                     </p>
-                    <p className="text-white/40 text-[10px] tracking-[0.2em] uppercase font-[Space_Grotesk] mt-1">
-                      2013 – 2017
+                    <p className="text-white/50 text-[12px] tracking-[0.2em] uppercase font-[Space_Grotesk] mt-1">
+                      July 2022 – Present
                     </p>
                   </div>
 
@@ -135,8 +135,8 @@ export function Education() {
                         <path d="M6 12v5c0 1.657 2.686 3 6 3s6-1.343 6-3v-5" />
                       </svg>
                     </div>
-                    <span className="text-white/30 text-[8px] tracking-[0.15em] uppercase font-[Space_Grotesk]">
-                      GPA 3.8
+                    <span className="text-white/50 text-[11px] tracking-[0.15em] uppercase font-[Space_Grotesk]">
+                      CGPA 8.34
                     </span>
                   </div>
                 </div>

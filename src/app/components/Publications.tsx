@@ -8,7 +8,6 @@ const publications = [
     title: "A Comprehensive Study on Secure Shell: Remote Infused with AI/ML",
     journal: "IJSAT",
     date: "2025",
-    authors: "Dhananjay Tailor",
     abstract:
       "Research on Secure Shell (SSH) enhanced with AI/ML approaches for remote systems.",
     preprintLink: "https://dhananjaytailor.in/Research_Paper.pdf",
@@ -47,23 +46,30 @@ export function Publications() {
 
         <div className="max-w-4xl mx-auto space-y-6">
           {publications.map((pub, index) => {
-            const start = 0.08 + index * 0.1;
-            const end = start + 0.12;
             return (
               <motion.div
                 key={pub.title}
                 className="group block"
-                style={{
-                  opacity: useTransform(scrollYProgress, [start, end], [0, 1]),
-                  y: useTransform(scrollYProgress, [start, end], [40, 0]),
+                initial={{ opacity: 0, y: 80, scale: 0.9, rotateX: 15 }}
+                whileInView={{ opacity: 1, y: 0, scale: 1, rotateX: 0 }}
+                viewport={{ once: true, margin: "-100px" }}
+                transition={{ 
+                  duration: 0.8, 
+                  delay: index * 0.15, 
+                  ease: [0.21, 0.47, 0.32, 0.98] 
                 }}
+                style={{ perspective: 1000 }}
               >
-                <div className="relative p-6 md:p-8 rounded-xl border border-white/5 bg-white/[0.01] hover:border-cyan-500/20 hover:bg-cyan-500/[0.02] transition-all duration-500">
-                  <div className="absolute top-6 right-6 text-white/5 text-4xl font-[Space_Grotesk]">
-                    {String(index + 1).padStart(2, "0")}
-                  </div>
+                <motion.div 
+                  whileHover={{ y: -8, scale: 1.02 }}
+                  transition={{ type: "spring", stiffness: 400, damping: 25 }}
+                  className="relative p-6 md:p-8 rounded-xl border border-white/5 bg-white/[0.01] hover:border-cyan-500/30 hover:bg-cyan-500/[0.03] hover:shadow-[0_0_40px_rgba(0,200,255,0.1)] transition-all duration-500 overflow-hidden"
+                >
+                  <motion.div 
+                    className="absolute inset-0 bg-gradient-to-br from-cyan-500/10 via-transparent to-purple-500/10 opacity-0 group-hover:opacity-100 transition-opacity duration-700"
+                  />
 
-                  <div className="flex flex-col gap-4 md:flex-row md:items-start md:gap-6">
+                  <div className="relative z-10 flex flex-col gap-4 md:flex-row md:items-start md:gap-6">
                     <div className="flex-1">
                       <h3 className="text-lg md:text-xl text-white/80 font-[Space_Grotesk] tracking-tight group-hover:text-white transition-colors pr-12 mb-2">
                         {pub.title}
@@ -76,7 +82,6 @@ export function Publications() {
                       <p className="text-white/30 text-sm font-[Inter] leading-relaxed">
                         {pub.abstract}
                       </p>
-                      <p className="text-white/20 text-xs font-[Inter] mt-3">{pub.authors}</p>
                     </div>
 
                     <div className="flex flex-col gap-2 md:items-end shrink-0">
@@ -104,7 +109,7 @@ export function Publications() {
                       </HoverBorderGradient>
                     </div>
                   </div>
-                </div>
+                </motion.div>
               </motion.div>
             );
           })}

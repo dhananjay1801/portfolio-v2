@@ -66,20 +66,21 @@ function CheckIcon() {
 function SpotlightCard({ item, width, height, textColor }) {
   return (
     <CardSpotlight
-      className="flex h-full min-h-0 w-full flex-col rounded-[22px] border-neutral-800/90 bg-black p-4 md:p-5"
+      className="flex h-full min-h-0 w-full min-w-0 flex-col rounded-[22px] border-neutral-800/90 bg-black p-4 md:p-5"
       style={{ width, height }}
       radius={360}
       color="#171717"
     >
       <h3
-        className="relative z-20 shrink-0 text-xl font-bold tracking-tight md:text-[1.6rem] md:leading-[1.1] font-[Space_Grotesk] line-clamp-3"
+        className="relative z-20 min-w-0 max-w-full shrink-0 break-words text-xl font-bold tracking-tight md:text-[1.6rem] md:leading-[1.15] font-[Space_Grotesk] line-clamp-3"
         style={{ color: textColor }}
+        title={item.title || item.name || item.text}
       >
         {item.title || item.name || item.text}
       </h3>
 
-      <div className="relative z-20 mt-auto flex shrink-0 items-center justify-between gap-3 border-t border-white/[0.06] pt-3 md:pt-4">
-        <span className="rounded-full border border-cyan-400/15 bg-cyan-500/[0.05] px-3 py-1 text-[9px] uppercase tracking-[0.2em] text-cyan-200/70 font-[Space_Grotesk]">
+      <div className="relative z-20 mt-auto flex min-w-0 shrink-0 items-center justify-between gap-2 border-t border-white/[0.06] pt-3 md:gap-3 md:pt-4">
+        <span className="shrink-0 whitespace-nowrap rounded-full border border-cyan-400/15 bg-cyan-500/[0.05] px-3 py-1 text-[9px] uppercase tracking-[0.2em] text-cyan-200/70 font-[Space_Grotesk]">
           {item.footer || item.date || "Year"}
         </span>
         {item.link ? (
@@ -185,6 +186,7 @@ export default function CircularGallery({
   useEffect(() => {
     const node = containerRef.current;
     if (!node) return undefined;
+    const interactiveSelector = "a, button, input, textarea, select, [role='button']";
 
     function handleWheel(event) {
       event.preventDefault();
@@ -192,6 +194,9 @@ export default function CircularGallery({
     }
 
     function handlePointerDown(event) {
+      if (event.target instanceof Element && event.target.closest(interactiveSelector)) {
+        return;
+      }
       dragState.current.isDragging = true;
       dragState.current.startX = event.clientX;
       dragState.current.startTarget = scrollRef.current.target;

@@ -44,89 +44,94 @@ export function Hero() {
 
         {/* Content */}
         <motion.div
-          className="relative z-10 text-center px-6"
+          className="relative z-10 w-full max-w-7xl px-6"
           style={{ scale: containerScale, opacity: containerOpacity }}
         >
-          <motion.div
-            initial={{ opacity: 0, y: 40 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 1, delay: 0.3 }}
-            className="mb-6"
-          >
-            <motion.span
-              className="text-cyan-400/60 text-sm tracking-[0.3em] uppercase font-[Space_Grotesk]"
-              style={{ opacity: subtitleOpacity }}
-            >
-              Welcome to my Galaxy
-            </motion.span>
-          </motion.div>
+          <div className="grid grid-cols-1 lg:grid-cols-12 items-center gap-8 lg:gap-10 w-full">
+            {/* Name on left */}
+            <div className="lg:col-span-7 min-w-0 overflow-visible flex flex-col items-center lg:items-start text-center lg:text-left">
+              <HeroNameRope />
+            </div>
 
-          {/* Title with GSAP animations */}
-          <div className="overflow-visible mb-8 flex justify-center">
-            <HeroNameRope />
+            {/* Everything else on right */}
+            <div className="lg:col-span-5 min-w-0 flex flex-col items-center lg:items-end text-center lg:text-right">
+              <motion.div
+                initial={{ opacity: 0, y: 40 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 1, delay: 0.3 }}
+                className="mb-6"
+              >
+                <motion.span
+                  className="text-cyan-400/60 text-sm tracking-[0.3em] uppercase font-[Space_Grotesk]"
+                  style={{ opacity: subtitleOpacity }}
+                >
+                  Welcome to my Galaxy
+                </motion.span>
+              </motion.div>
+
+              <motion.p
+                className="text-white/50 text-lg md:text-xl max-w-none font-[Inter] tracking-wide mb-4 lg:whitespace-nowrap"
+                style={{ opacity: subtitleOpacity }}
+                initial={{ opacity: 0, y: 30 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 1, delay: 0.8 }}
+              >
+                Software Engineer · DevOps Engineer · Problem Solver
+              </motion.p>
+
+              <motion.p
+                className="text-white/30 text-sm max-w-none font-[Inter] mb-10 lg:whitespace-nowrap"
+                style={{ opacity: subtitleOpacity }}
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ duration: 1, delay: 1 }}
+              >
+                Crafting elegant solutions to complex problems with modern technologies.
+              </motion.p>
+
+              {/* CTA buttons */}
+              <motion.div
+                className="flex flex-wrap gap-4 justify-center lg:justify-end"
+                style={{ opacity: subtitleOpacity }}
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.8, delay: 1.2 }}
+              >
+                <Magnet padding={50} magnetStrength={3} maxOffset={6}>
+                  <HoverBorderGradient
+                    as="a"
+                    href="#projects"
+                    containerClassName="rounded-full"
+                    className="h-12 px-7 text-sm font-medium font-[Space_Grotesk] tracking-wider uppercase flex items-center space-x-2"
+                  >
+                    <AceternityLogo />
+                    <span>View Projects</span>
+                  </HoverBorderGradient>
+                </Magnet>
+                <Magnet padding={50} magnetStrength={3} maxOffset={6}>
+                  <HoverBorderGradient
+                    as="a"
+                    href="#contact"
+                    containerClassName="rounded-full"
+                    className="h-12 px-7 text-sm font-medium font-[Space_Grotesk] tracking-wider uppercase flex items-center space-x-2"
+                  >
+                    <AceternityLogo />
+                    <span>Contact</span>
+                  </HoverBorderGradient>
+                </Magnet>
+              </motion.div>
+
+              <motion.p
+                className="text-white/25 text-xs tracking-[0.2em] uppercase font-[Space_Grotesk] mt-6"
+                style={{ opacity: subtitleOpacity }}
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ duration: 1, delay: 1.4 }}
+              >
+                Scroll to explore
+              </motion.p>
+            </div>
           </div>
-
-          <motion.p
-            className="text-white/50 text-lg md:text-xl max-w-xl mx-auto font-[Inter] tracking-wide mb-4"
-            style={{ opacity: subtitleOpacity }}
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 1, delay: 0.8 }}
-          >
-            Software Engineer · DevOps Engineer · Problem Solver
-          </motion.p>
-
-          <motion.p
-            className="text-white/30 text-sm max-w-md mx-auto font-[Inter] mb-10"
-            style={{ opacity: subtitleOpacity }}
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 1, delay: 1 }}
-          >
-            Crafting elegant solutions to complex problems with modern technologies
-          </motion.p>
-
-          {/* CTA buttons */}
-          <motion.div
-            className="flex flex-wrap gap-4 justify-center"
-            style={{ opacity: subtitleOpacity }}
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 1.2 }}
-          >
-            <Magnet padding={50} magnetStrength={3} maxOffset={6}>
-              <HoverBorderGradient
-                as="a"
-                href="#projects"
-                containerClassName="rounded-full"
-                className="h-12 px-7 text-sm font-medium font-[Space_Grotesk] tracking-wider uppercase flex items-center space-x-2"
-              >
-                <AceternityLogo />
-                <span>View Projects</span>
-              </HoverBorderGradient>
-            </Magnet>
-            <Magnet padding={50} magnetStrength={3} maxOffset={6}>
-              <HoverBorderGradient
-                as="a"
-                href="#contact"
-                containerClassName="rounded-full"
-                className="h-12 px-7 text-sm font-medium font-[Space_Grotesk] tracking-wider uppercase flex items-center space-x-2"
-              >
-                <AceternityLogo />
-                <span>Contact</span>
-              </HoverBorderGradient>
-            </Magnet>
-          </motion.div>
-
-          <motion.p
-            className="text-white/25 text-xs tracking-[0.2em] uppercase font-[Space_Grotesk] mt-6"
-            style={{ opacity: subtitleOpacity }}
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 1, delay: 1.4 }}
-          >
-            Scroll to explore
-          </motion.p>
         </motion.div>
 
         

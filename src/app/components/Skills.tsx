@@ -44,7 +44,7 @@ const skillGroups = [
   {
     name: "Databases",
     color: "#fbbf24",
-    skills: ["MySQL", "MongoDB", "PostgreSQL"],
+    skills: ["MySQL", "MongoDB", "PostgreSQL", "Redis"],
   },
 ];
 
