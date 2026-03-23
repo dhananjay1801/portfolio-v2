@@ -70,7 +70,7 @@ export function Hero() {
               </motion.div>
 
               <motion.p
-                className="text-white/50 text-lg md:text-xl max-w-none font-[Inter] tracking-wide mb-4 lg:whitespace-nowrap"
+                className="text-white/50 text-base md:text-xl max-w-none font-[Inter] tracking-wide mb-4 lg:whitespace-nowrap"
                 style={{ opacity: subtitleOpacity }}
                 initial={{ opacity: 0, y: 30 }}
                 animate={{ opacity: 1, y: 0 }}
@@ -80,7 +80,7 @@ export function Hero() {
               </motion.p>
 
               <motion.p
-                className="text-white/30 text-sm max-w-none font-[Inter] mb-10 lg:whitespace-nowrap"
+                className="text-white/30 text-xs sm:text-sm max-w-none font-[Inter] mb-8 md:mb-10 lg:whitespace-nowrap"
                 style={{ opacity: subtitleOpacity }}
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
@@ -102,7 +102,7 @@ export function Hero() {
                     as="a"
                     href="#projects"
                     containerClassName="rounded-full"
-                    className="h-12 px-7 text-sm font-medium font-[Space_Grotesk] tracking-wider uppercase flex items-center space-x-2"
+                    className="h-11 sm:h-12 px-5 sm:px-7 text-xs sm:text-sm font-medium font-[Space_Grotesk] tracking-[0.18em] uppercase flex items-center space-x-2"
                   >
                     <AceternityLogo />
                     <span>View Projects</span>
@@ -113,7 +113,7 @@ export function Hero() {
                     as="a"
                     href="#contact"
                     containerClassName="rounded-full"
-                    className="h-12 px-7 text-sm font-medium font-[Space_Grotesk] tracking-wider uppercase flex items-center space-x-2"
+                    className="h-11 sm:h-12 px-5 sm:px-7 text-xs sm:text-sm font-medium font-[Space_Grotesk] tracking-[0.18em] uppercase flex items-center space-x-2"
                   >
                     <AceternityLogo />
                     <span>Contact</span>

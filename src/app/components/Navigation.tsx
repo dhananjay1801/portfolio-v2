@@ -69,10 +69,8 @@ export function Navigation() {
       const el = document.getElementById(id);
       if (!el) return;
       // Lenis controls scroll — native scrollIntoView often won't move the page correctly
-      const isMobile = typeof window !== "undefined" && window.innerWidth < 1024;
-      const topBarOffset = isMobile ? -56 : 0;
       if (lenis) {
-        lenis.scrollTo(el, { offset: topBarOffset, duration: 1.15 });
+        lenis.scrollTo(el, { offset: 0, duration: 1.15 });
       } else {
         el.scrollIntoView({ behavior: "smooth", block: "start" });
       }
@@ -92,17 +90,17 @@ export function Navigation() {
       />
 
       {/* Side dot navigation */}
-      <nav className="fixed right-6 top-1/2 -translate-y-1/2 z-50 hidden lg:flex flex-col items-end gap-3">
+      <nav className="fixed right-3 md:right-6 top-1/2 -translate-y-1/2 z-50 flex flex-col items-end gap-2.5 md:gap-3">
         {sections.map((section) => (
           <button
             key={section.id}
             onClick={() => scrollTo(section.id)}
             onMouseEnter={() => setHovered(section.id)}
             onMouseLeave={() => setHovered(null)}
-            className="flex items-center gap-3 group"
+            className="flex items-center gap-2 md:gap-3 group"
           >
             <motion.span
-              className="text-xs tracking-wider uppercase text-white/60 font-[Space_Grotesk]"
+              className="hidden lg:block text-xs tracking-wider uppercase text-white/60 font-[Space_Grotesk]"
               initial={{ opacity: 0, x: 10 }}
               animate={{
                 opacity: hovered === section.id ? 1 : 0,
@@ -121,7 +119,7 @@ export function Navigation() {
               transition={{ duration: 0.3 }}
             >
               <div
-                className={`w-2.5 h-2.5 rounded-full transition-all duration-300 ${
+                className={`w-2.5 h-2.5 md:w-3 md:h-3 rounded-full transition-all duration-300 ${
                   activeSection === section.id
                     ? "bg-cyan-400 scale-100"
                     : "bg-white/20 scale-75 group-hover:bg-white/50"
@@ -140,33 +138,6 @@ export function Navigation() {
           </button>
         ))}
       </nav>
-
-      {/* Mobile top nav */}
-      <motion.div
-        className="fixed top-0 left-0 right-0 z-50 lg:hidden"
-        initial={{ y: -60 }}
-        animate={{ y: 0 }}
-        transition={{ delay: 0.5, duration: 0.5 }}
-      >
-        <div className="flex items-center justify-between px-5 py-3 bg-black/70 backdrop-blur-xl border-b border-white/5">
-          <span className="text-white/90 text-sm tracking-widest uppercase font-[Space_Grotesk]">
-            Portfolio
-          </span>
-          <div className="flex gap-1.5">
-            {sections.map((s) => (
-              <button
-                key={s.id}
-                onClick={() => scrollTo(s.id)}
-                className={`h-1.5 rounded-full transition-all duration-300 ${
-                  activeSection === s.id
-                    ? "bg-cyan-400 w-4"
-                    : "bg-white/20 w-1.5"
-                }`}
-              />
-            ))}
-          </div>
-        </div>
-      </motion.div>
     </>
   );
 }

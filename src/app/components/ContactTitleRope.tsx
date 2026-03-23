@@ -38,7 +38,7 @@ function AnimatedWord({
 export function ContactTitleRope({
   containerRef,
 }: {
-  containerRef: RefObject<HTMLElement>;
+  containerRef: RefObject<HTMLElement | null>;
 }) {
   const { scrollYProgress } = useScroll({
     target: containerRef,

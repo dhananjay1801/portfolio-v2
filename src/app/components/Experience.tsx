@@ -273,7 +273,6 @@ function getNodeTsList() {
   return getNodeTs(buildCurve());
 }
 
-const CARD_W = 296;
 const DOT_GAP = 22;
 const CARD_OFFSET_UP = 175;
 
@@ -283,8 +282,19 @@ export function Experience() {
   const drawProgress = useTransform(scrollYProgress, [0.05, 0.92], [0, 1]);
   const [progress, setProgress] = useState(0);
   const [activeIndex, setActiveIndex] = useState(-1);
+  const [viewport, setViewport] = useState({ width: 0, height: 0 });
+  const isSmallScreen = viewport.width > 0 && viewport.width < 1024;
 
-  const nodeScreenPos = useMemo(() => projectNodePositionsPx(), []);
+  useEffect(() => {
+    const updateViewport = () => {
+      setViewport({ width: window.innerWidth, height: window.innerHeight });
+    };
+    updateViewport();
+    window.addEventListener("resize", updateViewport, { passive: true });
+    return () => window.removeEventListener("resize", updateViewport);
+  }, []);
+
+  const nodeScreenPos = useMemo(() => projectNodePositionsPx(), [viewport.width, viewport.height]);
   const nodeTs = useMemo(() => getNodeTsList(), []);
 
   useMotionValueEvent(drawProgress, "change", (v) => {
@@ -321,13 +331,24 @@ export function Experience() {
             if (i >= nodeScreenPos.length) return null;
             const { xPx, yPx, side } = nodeScreenPos[i];
             const isActive = i === activeIndex;
+            const cardWidth = Math.min(296, Math.max(240, viewport.width - 40));
 
             // Card placed directly beside the dot.
             // dot on right side of screen → card extends rightward from dot
             // dot on left side of screen  → card extends leftward from dot
-            const leftPx = side === "right"
+            const idealLeftPx = side === "right"
               ? xPx + DOT_GAP
-              : xPx - DOT_GAP - CARD_W;
+              : xPx - DOT_GAP - cardWidth;
+            const maxLeftPx = Math.max(12, viewport.width - cardWidth - 12);
+            const desktopLeftPx = Math.min(maxLeftPx, Math.max(12, idealLeftPx));
+            const leftPx = isSmallScreen
+              ? Math.max(12, (viewport.width - cardWidth) / 2)
+              : desktopLeftPx;
+            const mobileTopPx = Math.min(
+              Math.max(190, yPx - 95),
+              Math.max(190, viewport.height - 250),
+            );
+            const topPx = isSmallScreen ? mobileTopPx : yPx - CARD_OFFSET_UP;
 
             return (
               <motion.div
@@ -335,16 +356,16 @@ export function Experience() {
                 className="absolute pointer-events-auto"
                 style={{
                   left: leftPx,
-                  top: yPx - CARD_OFFSET_UP,
-                  width: CARD_W,
-                  transform: "translateY(-50%)",
+                  top: topPx,
+                  width: cardWidth,
+                  transform: isSmallScreen ? "none" : "translateY(-50%)",
                   perspective: 1200,
                 }}
                 initial={false}
                 animate={{
                   opacity: isActive ? 1 : 0,
-                  x: isActive ? 0 : side === "right" ? -24 : 24,
-                  scale: isActive ? 1 : 0.92,
+                  x: isActive ? 0 : isSmallScreen ? 0 : side === "right" ? -24 : 24,
+                  scale: isActive ? 1 : isSmallScreen ? 0.98 : 0.92,
                 }}
                 transition={{
                   type: "spring",
@@ -363,8 +384,8 @@ export function Experience() {
                   }}
                   animate={{
                     borderColor: isActive ? "rgba(96,165,250,0.5)" : "rgba(59,130,246,0.2)",
-                    rotateX: isActive ? 4 : 0,
-                    rotateY: isActive ? (side === "right" ? -6 : 6) : 0,
+                    rotateX: isSmallScreen ? 0 : isActive ? 4 : 0,
+                    rotateY: isSmallScreen ? 0 : isActive ? (side === "right" ? -6 : 6) : 0,
                     z: isActive ? 24 : 0,
                   }}
                   transition={{ duration: 0.4, ease: [0.25, 0.46, 0.45, 0.94] }}

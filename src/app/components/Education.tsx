@@ -44,14 +44,12 @@ export function Education() {
         </div>
 
         <div
-          className="flex-1 flex items-center justify-center px-6"
+          className="flex-1 flex items-center justify-center px-4 sm:px-6"
           style={{ perspective: "1200px" }}
         >
           <motion.div
-            className="relative"
+            className="relative w-[min(570px,92vw)] aspect-[570/388]"
             style={{
-              width: "570px",
-              height: "388px",
               rotateY,
               rotateX,
               rotateZ,

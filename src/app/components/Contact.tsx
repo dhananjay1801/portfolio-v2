@@ -125,7 +125,7 @@ export function Contact() {
           ))}
         </div>
 
-        <div className="relative z-10 w-full max-w-4xl mx-auto px-6 md:px-12 text-center">
+        <div className="relative z-10 w-full max-w-4xl mx-auto px-4 sm:px-6 md:px-12 text-center">
           <motion.div
             style={{
               opacity: useTransform(scrollYProgress, [0, 0.15], [0, 1]),
@@ -151,11 +151,11 @@ export function Contact() {
                 as="a"
                 href="mailto:dhananjaytailor18@gmail.com"
                 containerClassName="rounded-full mb-12 transition-all duration-500 hover:shadow-[0_0_30px_rgba(0,200,255,0.06)]"
-                className="h-12 gap-2 px-6 text-sm font-medium flex items-center space-x-2"
+                className="h-11 sm:h-12 gap-2 px-4 sm:px-6 text-xs sm:text-sm font-medium flex items-center space-x-2"
               >
                 <AceternityLogo />
                 <Mail className="relative z-10 h-4 w-4 shrink-0 opacity-80" aria-hidden />
-                <span className="relative z-10 whitespace-nowrap font-[Inter]">
+                <span className="relative z-10 max-w-[62vw] sm:max-w-none truncate font-[Inter]">
                     dhananjaytailor18@gmail.com
                 </span>
                 <ArrowUpRight className="relative z-10 h-4 w-4 shrink-0 opacity-80" aria-hidden />
@@ -201,7 +201,7 @@ export function Contact() {
                 target="_blank"
                 rel="noopener noreferrer"
                 containerClassName="rounded-full mt-6 transition-all duration-500 hover:shadow-[0_0_40px_rgba(0,200,255,0.12),inset_0_0_30px_rgba(0,200,255,0.04)]"
-                className="h-12 gap-2 px-7 text-sm font-medium flex items-center space-x-2 font-[Space_Grotesk] tracking-wide"
+                className="h-11 sm:h-12 gap-2 px-5 sm:px-7 text-xs sm:text-sm font-medium flex items-center space-x-2 font-[Space_Grotesk] tracking-wide"
               >
                 <AceternityLogo />
                 <Download className="relative z-10 h-4 w-4 shrink-0 opacity-80" aria-hidden />

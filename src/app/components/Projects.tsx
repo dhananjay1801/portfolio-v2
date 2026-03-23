@@ -1,5 +1,5 @@
 import { motion, useScroll, useTransform } from "motion/react";
-import { useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { ExternalLink, Github } from "lucide-react";
 import { ImageWithFallback } from "./figma/ImageWithFallback";
 import Shuffle from "./Shuffle";
@@ -91,41 +91,42 @@ const projects: {
   },
 ];
 
-// Card width as a fraction of viewport width (matches lg:w-[40vw], capped at 600px)
-// Gap between cards in vw units (gap-8 = 2rem ≈ 2vw on 1024px screen, use 2.5 as safe avg)
-// Total scroll distance = (n-1) cards * (cardWidth + gap)
-// We express the x transform in %, where 100% = full track width
-// Simplest: express end position in vw so it's viewport-relative and matches card sizes exactly
-
-const CARD_WIDTH_VW = 34; // slightly smaller card width for a tighter layout
-const GAP_VW = 2.25;      // matches the reduced visual gap
-const PADDING_LEFT_VW = 5; // lg:pl-20 ≈ 5vw
-
-// How many vw units we need to scroll to bring the last card into view
-// Each step scrolls one card+gap width
-const totalScrollVW = (projects.length - 1) * (CARD_WIDTH_VW + GAP_VW);
-
-// Section height: 100vh (to show first card) + scroll distance converted to vh
-// Using 1:1 vw→vh mapping keeps it simple and correct
-const SECTION_HEIGHT_VH = 100 + totalScrollVW;
-
 export function Projects() {
   const containerRef = useRef(null);
+  const trackViewportRef = useRef<HTMLDivElement>(null);
+  const trackRef = useRef<HTMLDivElement>(null);
+  const [scrollDistancePx, setScrollDistancePx] = useState(0);
   const { scrollYProgress } = useScroll({
     target: containerRef,
     offset: ["start start", "end end"],
   });
 
-  // Move track left by totalScrollVW worth of vw. Express as vw string.
-  // framer-motion supports `${n}vw` in useTransform output.
-  // Start horizontal scroll a little later so the first card settles in place
-  const x = useTransform(scrollYProgress, [0, 0.15, 1], ["0vw", "0vw", `-${totalScrollVW}vw`]);
+  useEffect(() => {
+    const updateDistance = () => {
+      const viewportEl = trackViewportRef.current;
+      const trackEl = trackRef.current;
+      if (!viewportEl || !trackEl) return;
+      const distance = Math.max(0, trackEl.scrollWidth - viewportEl.clientWidth);
+      setScrollDistancePx(distance);
+    };
+
+    updateDistance();
+    window.addEventListener("resize", updateDistance, { passive: true });
+    window.addEventListener("load", updateDistance);
+    return () => {
+      window.removeEventListener("resize", updateDistance);
+      window.removeEventListener("load", updateDistance);
+    };
+  }, []);
+
+  // Use real measured pixel distance so small screens can reach the final card.
+  const x = useTransform(scrollYProgress, [0, 0.15, 1], ["0px", "0px", `-${scrollDistancePx}px`]);
 
   return (
     <section
       ref={containerRef}
       className="relative bg-transparent"
-      style={{ height: `${SECTION_HEIGHT_VH}vh` }}
+      style={{ height: `calc(100vh + ${scrollDistancePx}px)` }}
     >
       <div className="sticky top-0 h-screen flex flex-col overflow-x-hidden overflow-y-visible">
         {/* BG effects */}
@@ -142,7 +143,7 @@ export function Projects() {
             <span className="text-white/30 text-xs tracking-[0.3em] uppercase font-[Space_Grotesk] block mb-4">
               04 / Projects
             </span>
-            <div className="flex items-baseline gap-6">
+            <div className="flex flex-wrap items-baseline gap-4 md:gap-6">
               <Shuffle
                 text="Selected work"
                 textAlign="left"
@@ -156,8 +157,12 @@ export function Projects() {
         </div>
 
         {/* Horizontal scroll track */}
-        <div className="flex-1 flex items-center overflow-x-hidden overflow-y-visible py-6 md:py-8">
+        <div
+          ref={trackViewportRef}
+          className="flex-1 flex items-center overflow-x-hidden overflow-y-visible py-6 md:py-8"
+        >
           <motion.div
+            ref={trackRef}
             className="-translate-y-2 md:-translate-y-3 flex gap-6 md:gap-7 pl-6 md:pl-12 lg:pl-20 pr-[24vw]"
             style={{ x }}
           >
@@ -190,7 +195,7 @@ function ProjectCard({
 }) {
   return (
     <motion.div
-      className="group relative flex-shrink-0 w-[60vw] md:w-[40vw] lg:w-[28vw] max-w-[440px]"
+      className="group relative flex-shrink-0 w-[84vw] sm:w-[68vw] md:w-[40vw] lg:w-[28vw] max-w-[440px]"
       initial={{ opacity: 0, y: 40 }}
       whileInView={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.6, delay: index * 0.05 }}
