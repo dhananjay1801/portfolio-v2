@@ -209,8 +209,9 @@ function ProjectCard({
         />
         <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
 
-        {/* Overlay links */}
-        <div className="absolute bottom-4 right-4 flex gap-2.5 opacity-0 group-hover:opacity-100 transition-all duration-500 translate-y-3 group-hover:translate-y-0">
+        {/* Overlay links
+            Always show on small/touch screens (no hover), and keep the original hover-only behavior on md+. */}
+        <div className="absolute bottom-4 right-4 flex gap-2.5 opacity-100 translate-y-0 transition-all duration-500 lg:opacity-0 lg:translate-y-3 group-hover:lg:opacity-100 group-hover:lg:translate-y-0">
           <a
             href={project.github}
             target="_blank"
