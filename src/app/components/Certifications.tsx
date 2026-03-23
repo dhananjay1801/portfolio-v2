@@ -88,7 +88,7 @@ export function Certifications() {
     <section ref={containerRef} className="relative overflow-hidden bg-transparent pt-28 pb-2 md:pt-36 md:pb-4">
       <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_rgba(100,50,255,0.04)_0%,_transparent_60%)]" />
 
-      <div className="relative z-10 px-6 md:px-12 lg:px-20">
+      <div className="relative z-10 px-4 sm:px-6 md:px-12 lg:px-20">
         <motion.div
           className="mb-6"
           style={{
@@ -117,7 +117,7 @@ export function Certifications() {
         </motion.p>
 
         <motion.div
-          className="relative h-[420px] sm:h-[500px] md:h-[560px] -translate-y-6 md:-translate-y-10"
+          className="relative h-[520px] sm:h-[560px] md:h-[560px] -translate-y-3 sm:-translate-y-6 md:-translate-y-10"
           style={{
             opacity: useTransform(scrollYProgress, [0.08, 0.2], [0, 1]),
             y: useTransform(scrollYProgress, [0.08, 0.2], [8, 0]),

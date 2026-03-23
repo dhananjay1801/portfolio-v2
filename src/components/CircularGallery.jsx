@@ -231,9 +231,20 @@ export default function CircularGallery({
     };
   }, [scrollSpeed]);
 
-  const cardWidth = Math.min(dimensions.width * 0.286, 308);
-  const cardHeight = Math.min(dimensions.height * 0.682, 418) * 0.5 * 1.2;
-  const gap = Math.min(dimensions.width * 0.02, 22);
+  // Card sizing is derived from the gallery container's current dimensions.
+  // On smaller screens the container becomes narrow, so we scale card dimensions up
+  // to avoid the gallery looking "too compact" on phones.
+  const isNarrowScreen = dimensions.width > 0 && dimensions.width < 480;
+
+  const cardWidth = isNarrowScreen
+    ? Math.min(dimensions.width * 0.76, 690)
+    : Math.min(dimensions.width * 0.286, 308);
+
+  const cardHeight = isNarrowScreen
+    ? Math.min(dimensions.height * 0.72, 460) * 0.55 * 1.2
+    : Math.min(dimensions.height * 0.682, 418) * 0.5 * 1.2;
+
+  const gap = isNarrowScreen ? Math.min(dimensions.width * 0.017, 18) : Math.min(dimensions.width * 0.02, 22);
   const step = cardWidth + gap;
   const loopWidth = step * galleryItems.length;
   const viewportWidth = dimensions.width || 1;
