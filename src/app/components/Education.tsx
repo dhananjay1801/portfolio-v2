@@ -36,7 +36,7 @@ export function Education() {
               05 / Education
             </span>
             <Shuffle
-              text="Academic Background"
+              text="The Learning Card"
               textAlign="left"
               className="text-4xl md:text-5xl text-white/90 font-[Space_Grotesk] tracking-tight block"
             />

@@ -6,18 +6,18 @@ import Shuffle from "./Shuffle";
 const experiences = [
   {
     title: "Administrative Staff",
-    company: "Enbee Education Center Pvt. Ltd. · Vadodara, Gujarat",
-    period: "February 2021 – June 2021",
+    company: "Enbee Education Center · Vadodara, Gujarat",
+    period: "Feb 2021 – June 2021",
     summary: "Supported operations and client services for international education workflows.",
     highlights: [
-      "Assisted clients with college applications and visa documentation while maintaining records.",
-      "Managed back-office operations and client coordination to ensure smooth operations.",
+      "College & visa paperwork while maintaining accurate records.",
+      "Back-office coordination for smooth daily ops.",
     ],
   },
   {
     title: "Python Developer Intern",
     company: "Infosys Springboard · Remote",
-    period: "November 2025 – January 2026",
+    period: "Nov 2025 – Jan 2026",
     summary: "Worked on NLP-driven hiring intelligence features and iterative product improvements with the team.",
     highlights: [
       "Developed SkillGapAI using BERT for NLP-based resume-JD gap analysis and recommendations.",
@@ -27,11 +27,11 @@ const experiences = [
   {
     title: "Software Developer Intern",
     company: "Allianz Cloud · Vadodara, Gujarat",
-    period: "January 2026 – Present",
-    summary: "Building cybersecurity platform features with modern web and Python stacks in a collaborative team environment.",
+    period: "Jan 2026 – Present",
+    summary: "Building cybersecurity platform features with modern technologies in a collaborative team environment.",
     highlights: [
-      "Developed web applications using NextJS, ReactJS, and Python for cybersecurity platforms.",
-      "Collaborated in a team to build and deliver client-focused projects with API-driven integrations.",
+      "Cybersecurity web work in Next.js, React, and Python.",
+      "Delivered API-backed features with the team.",
     ],
   },
 ];

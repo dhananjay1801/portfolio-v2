@@ -287,7 +287,7 @@ export function Skills() {
               className="absolute inset-0 flex items-center justify-center px-6"
               style={{ transformStyle: "preserve-3d" }}
             >
-              <div className="flex flex-wrap gap-4 md:gap-6 justify-center max-w-4xl">
+              <div className="flex flex-wrap gap-6 md:gap-10 justify-center max-w-4xl">
                 {group.skills.map((label, si) => (
                   <CollectSkill
                     key={`${group.name}-${label}`}

@@ -4,14 +4,10 @@ import ProfileCard from "./ProfileCard";
 import Shuffle from "./Shuffle";
 
 const words = [
-  "I'm", "a", "passionate", "developer", "with", "a", "keen", "eye", "for", "design",
-  "and", "a", "love", "for", "building", "innovative", "web", "applications.",
-  "With", "years", "of", "experience", "in", "full-stack", "development,",
-  "I", "specialize", "in", "creating", "seamless", "user", "experiences",
-  "and", "robust", "backend", "systems.", "My", "journey", "in", "tech",
-  "started", "with", "curiosity", "and", "has", "evolved", "into", "a", "career",
-  "focused", "on", "continuous", "learning", "and", "pushing", "the", "boundaries",
-  "of", "what's", "possible", "on", "the", "web.",
+  "I'm", "a", "developer", "with", "a", "love", "for", "building", "innovative", "solutions.",
+  "With", "experience", "through", "internships,", "I", "specialize", "in", "creating", "user", "experiences", "and", "backend", "systems.",
+  "My", "journey", "in", "tech", "started", "with", "curiosity", "and", "has", "evolved", "into", "a", "career", "focused", "on", "continuous", "learning", "and", "pushing", "the", "boundaries", "of", "what's", "possible", "on", "the", "web,",
+  "with", "a", "strong", "interest", "in", "solving", "complex", "problems", "and", "exploring", "new", "technologies."
 ];
 
 export function About() {

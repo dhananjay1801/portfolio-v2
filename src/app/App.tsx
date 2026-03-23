@@ -9,32 +9,12 @@ import { Certifications } from "./components/Certifications";
 import { Publications } from "./components/Publications";
 import { Contact } from "./components/Contact";
 import MagneticCursor from "./components/MagneticCursor";
-import { useEffect } from "react";
-import Lenis from "lenis";
 import Particles from "../components/Particles";
+import { LenisProvider } from "./contexts/LenisContext";
 
 export default function App() {
-  useEffect(() => {
-    const lenis = new Lenis({
-      // Keep defaults; just smooth wheel/touch scrolling
-      smoothWheel: true,
-      smoothTouch: false,
-    });
-
-    let rafId = 0;
-    const raf = (time: number) => {
-      lenis.raf(time);
-      rafId = requestAnimationFrame(raf);
-    };
-    rafId = requestAnimationFrame(raf);
-
-    return () => {
-      cancelAnimationFrame(rafId);
-      lenis.destroy();
-    };
-  }, []);
-
   return (
+    <LenisProvider>
     <div className="bg-black text-white selection:bg-cyan-500/30 selection:text-white">
       <MagneticCursor />
       <Navigation />
@@ -98,5 +78,6 @@ export default function App() {
         </div>
       </div>
     </div>
+    </LenisProvider>
   );
 }

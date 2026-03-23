@@ -4,76 +4,90 @@ import { ExternalLink, Github } from "lucide-react";
 import { ImageWithFallback } from "./figma/ImageWithFallback";
 import Shuffle from "./Shuffle";
 
-const projects = [
+const projects: {
+  title: string;
+  description: string;
+  tags: string[];
+  image: string;
+  github: string;
+  live?: string;
+}[] = [
   {
-    title: "E-Commerce Platform",
+    title: "Nous",
     description:
-      "A full-featured e-commerce platform with real-time inventory management, payment processing, and analytics dashboard.",
-    tags: ["React", "Node.js", "PostgreSQL", "Stripe"],
+      "AI-powered remote Windows command execution using RAG and LLM. Securely manage multiple systems via NLP.",
+    tags: ["Python", "C#", "MySQL", "SSL/TLS", "RAG", "Gemini"],
     image:
-      "https://images.unsplash.com/photo-1762330463863-a6a399beb5ba?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxtb2Rlcm4lMjBlY29tbWVyY2UlMjB3ZWJzaXRlJTIwZGFya3xlbnwxfHx8fDE3NzI4OTg3ODl8MA&ixlib=rb-4.1.0&q=80&w=1080",
-    github: "#",
-    live: "#",
+      "https://images.unsplash.com/photo-1629654297299-c8506221ca97?w=1080&q=80&auto=format&fit=crop",
+    github: "https://github.com/dhananjay1801/nous",
   },
   {
-    title: "Task Management App",
+    title: "SkillGapAI",
     description:
-      "Collaborative task management tool with real-time updates, team workspaces, and advanced filtering capabilities.",
-    tags: ["Next.js", "TypeScript", "Firebase", "Tailwind"],
+      "AI-powered resume analysis that uses NLP to identify skill gaps and match candidates to job requirements.",
+    tags: ["Python", "Streamlit", "NLP", "BERT", "Hugging Face"],
     image:
-      "https://images.unsplash.com/photo-1770734360042-676ef707d022?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHx0YXNrJTIwbWFuYWdlbWVudCUyMGRhc2hib2FyZCUyMGRhcmslMjBtb2RlfGVufDF8fHx8MTc3Mjg5ODc4OXww&ixlib=rb-4.1.0&q=80&w=1080",
-    github: "#",
-    live: "#",
+      "https://images.pexels.com/photos/669615/pexels-photo-669615.jpeg",
+    github: "https://github.com/dhananjay1801/SkillGapAI-Analyzing-Resume-and-Job-Post-for-Skill-Gap",
+    live: "https://dhananjay1801-skillgapai-analyzing-resume-and-job-p-home-ffmwhj.streamlit.app/",
   },
   {
-    title: "AI Chat Interface",
+    title: "Get Me A Chai",
     description:
-      "Modern chat interface for AI assistants with streaming responses, conversation history, and customizable themes.",
-    tags: ["React", "Python", "OpenAI", "WebSocket"],
+      "A Patreon-style platform for creators to receive direct support through custom profiles and Razorpay payment integration.",
+    tags: ["Next.js", "MongoDB", "NextAuth", "Razorpay", "Tailwind"],
     image:
-      "https://images.unsplash.com/photo-1762340277380-04c2c30d0ef8?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxhcnRpZmljaWFsJTIwaW50ZWxsaWdlbmNlJTIwY2hhdCUyMGludGVyZmFjZXxlbnwxfHx8fDE3NzI4OTg3OTB8MA&ixlib=rb-4.1.0&q=80&w=1080",
-    github: "#",
-    live: "#",
+      "https://images.unsplash.com/photo-1559526324-4b87b5e36e44?w=1080&q=80&auto=format&fit=crop",
+    github: "https://github.com/dhananjay1801/get-me-a-chai",
+    live: "https://get-me-a-chai-git.vercel.app/",
   },
   {
-    title: "Analytics Dashboard",
+    title: "Linkium",
     description:
-      "Real-time analytics dashboard with interactive charts, custom reports, and data visualization tools.",
-    tags: ["Vue.js", "D3.js", "Express", "MongoDB"],
+      "A modern link-in-bio tool to organize and share all your important links through a single, custom URL.",
+    tags: ["Next.js", "MongoDB", "JWT", "Tailwind", "Nodemailer"],
     image:
-      "https://images.unsplash.com/photo-1551288049-bebda4e38f71?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxkYXRhJTIwYW5hbHl0aWNzJTIwZGFzaGJvYXJkJTIwY2hhcnRzfGVufDF8fHx8MTc3Mjg2MDE0NXww&ixlib=rb-4.1.0&q=80&w=1080",
-    github: "#",
-    live: "#",
+      "https://images.squarespace-cdn.com/content/v1/5c27c93f1aef1d60b29781f9/1c63ca52-79ec-4937-9a40-2ab01e554a2b/blog-social-media-080320.jpg?format=2500w",
+    github: "https://github.com/dhananjay1801/linkium",
+    live: "https://linkium.dhananjaytailor.in/",
   },
   {
-    title: "Social Media App",
+    title: "YouTube Max Quality",
     description:
-      "Social networking platform with posts, comments, likes, real-time notifications, and user profiles.",
-    tags: ["React Native", "GraphQL", "AWS", "DynamoDB"],
+      "Chrome extension that auto-selects the highest YouTube quality and respects manual picks with a simple popup toggle.",
+    tags: ["JavaScript", "Chrome API", "HTML", "CSS"],
     image:
-      "https://images.unsplash.com/photo-1710870509663-16f20f75d758?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxzb2NpYWwlMjBtZWRpYSUyMG1vYmlsZSUyMGFwcCUyMGludGVyZmFjZXxlbnwxfHx8fDE3NzI4OTg3OTF8MA&ixlib=rb-4.1.0&q=80&w=1080",
-    github: "#",
-    live: "#",
+      "https://wallpapers.com/images/featured/youtube-background-34ycn949dz42yg4c.webp",
+    github: "https://github.com/dhananjay1801/youtube-max-quality",
   },
   {
-    title: "Portfolio Builder",
+    title: "Code Studio",
     description:
-      "Drag-and-drop portfolio builder allowing users to create stunning portfolios without coding.",
-    tags: ["React", "TypeScript", "Supabase", "Tailwind"],
+      "Judge0 powered multi-language Web IDE with real-time compilation, output terminal and syntax highlighting.",
+    tags: ["React", "TypeScript", "Vite", "Judge0", "Tailwind"],
     image:
-      "https://images.unsplash.com/photo-1648134859211-4a1b57575f4e?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxwb3J0Zm9saW8lMjB3ZWJzaXRlJTIwYnVpbGRlciUyMGRlc2lnbnxlbnwxfHx8fDE3NzI4OTg3OTF8MA&ixlib=rb-4.1.0&q=80&w=1080",
-    github: "#",
-    live: "#",
+      "https://static.vecteezy.com/system/resources/thumbnails/051/261/577/small/person-coding-on-a-laptop-with-vibrant-programming-code-on-the-screen-photo.jpeg",
+    github: "https://github.com/dhananjay1801/code-studio",
+    live: "https://code-studio-iota.vercel.app/",
+  },
+  {
+    title: "BitLinks",
+    description:
+      "Registration-free URL shortener with custom short links and fast redirects.",
+    tags: ["Next.js", "MongoDB", "Tailwind"],
+    image:
+      "https://d3gribjq2zt3oj.cloudfront.net/blog-hub/wp-content/uploads/2022/02/Shortlinks_blog_social-sharing_1200x630.png",
+    github: "https://github.com/dhananjay1801/bit-links",
+    live: "https://bitlinksurl.vercel.app/",
   },
   {
     title: "More on GitHub",
     description:
-      "Want to see more? Explore the rest of my work, experiments, and open-source projects on GitHub.",
-    tags: ["Open Source", "Repositories", "More Projects"],
+      "Explore more repositories, experiments, and open-source work. Find additional projects and ideas on my GitHub profile.",
+    tags: ["Open Source", "Repositories", "GitHub"],
     image:
-      "https://images.unsplash.com/photo-1618401471353-b98afee0b2eb?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxnaXRodWIlMjBkYXJrJTIwY29kZXxlbnwxfHx8fDE3NzI4OTg3OTF8MA&ixlib=rb-4.1.0&q=80&w=1080",
-    github: "https://github.com/yourusername",
-    live: "https://github.com/yourusername",
+      "https://images.unsplash.com/photo-1618401471353-b98afee0b2eb?w=1080&q=80&auto=format&fit=crop",
+    github: "https://github.com/dhananjay1801",
   },
 ];
 
@@ -201,7 +215,7 @@ function ProjectCard({
           >
             <Github className="h-4 w-4" />
           </a>
-          {index !== projects.length - 1 && (
+          {project.live ? (
             <a
               href={project.live}
               target="_blank"
@@ -211,10 +225,10 @@ function ProjectCard({
             >
               <ExternalLink className="h-4 w-4" />
             </a>
-          )}
+          ) : null}
         </div>
 
-        <div className="absolute top-4 left-4 text-white/8 text-6xl font-[Space_Grotesk] leading-none">
+        <div className="absolute top-4 left-4 text-white/15 text-6xl font-[Space_Grotesk] leading-none">
           {String(index + 1).padStart(2, "0")}
         </div>
       </div>

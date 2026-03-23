@@ -67,25 +67,25 @@ const socialLinks = [
   {
     name: "GitHub",
     icon: GitHubLogo,
-    url: "https://github.com/yourusername",
+    url: "https://github.com/dhananjay1801/",
     label: "github.com/yourusername",
   },
   {
     name: "LinkedIn",
     icon: LinkedInLogo,
-    url: "https://linkedin.com/in/yourusername",
+    url: "https://www.linkedin.com/in/dhananjaytailor/",
     label: "linkedin.com/in/yourusername",
   },
   {
     name: "X",
     icon: XLogo,
-    url: "https://x.com/yourusername",
+    url: "https://x.com/dhananjay_1801",
     label: "x.com/yourusername",
   },
   {
     name: "LeetCode",
     icon: LeetCodeLogo,
-    url: "https://leetcode.com/yourusername",
+    url: "https://leetcode.com/dhananjay1801",
     label: "leetcode.com/yourusername",
   },
 ];
@@ -156,7 +156,7 @@ export function Contact() {
                 <AceternityLogo />
                 <Mail className="relative z-10 h-4 w-4 shrink-0 opacity-80" aria-hidden />
                 <span className="relative z-10 whitespace-nowrap font-[Inter]">
-                  your.email@example.com
+                    dhananjaytailor18@gmail.com
                 </span>
                 <ArrowUpRight className="relative z-10 h-4 w-4 shrink-0 opacity-80" aria-hidden />
               </HoverBorderGradient>
@@ -197,14 +197,15 @@ export function Contact() {
             <Magnet padding={50} magnetStrength={3}>
               <HoverBorderGradient
                 as="a"
-                href="/resume.pdf"
-                download
+                href="Dhananjay's Resume.pdf"
+                target="_blank"
+                rel="noopener noreferrer"
                 containerClassName="rounded-full mt-6 transition-all duration-500 hover:shadow-[0_0_40px_rgba(0,200,255,0.12),inset_0_0_30px_rgba(0,200,255,0.04)]"
                 className="h-12 gap-2 px-7 text-sm font-medium flex items-center space-x-2 font-[Space_Grotesk] tracking-wide"
               >
                 <AceternityLogo />
                 <Download className="relative z-10 h-4 w-4 shrink-0 opacity-80" aria-hidden />
-                <span className="relative z-10">Download Resume</span>
+                <span className="relative z-10">Resume</span>
               </HoverBorderGradient>
             </Magnet>
           </motion.div>
@@ -216,8 +217,8 @@ export function Contact() {
             opacity: useTransform(scrollYProgress, [0.7, 0.9], [0, 1]),
           }}
         >
-          <p className="text-white/15 text-xs font-[Space_Grotesk] tracking-[0.2em] uppercase">
-            &copy; 2026 Your Name. All rights reserved.
+          <p className="text-white/25 text-xs font-[Space_Grotesk] tracking-[0.2em] uppercase">
+            &copy; {new Date().getFullYear()} Dhananjay Tailor. All rights reserved.
           </p>
         </motion.div>
       </div>

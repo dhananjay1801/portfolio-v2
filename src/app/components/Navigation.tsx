@@ -1,5 +1,7 @@
-import { motion, useScroll, useMotionValueEvent } from "motion/react";
-import { useState, useCallback } from "react";
+import { motion, useScroll } from "motion/react";
+import { useState, useCallback, useEffect } from "react";
+
+import { useLenis } from "../contexts/LenisContext";
 
 const sections = [
   { id: "hero", label: "Home" },
@@ -13,26 +15,70 @@ const sections = [
   { id: "contact", label: "Contact" },
 ];
 
+/** Document Y of element top (works for nested wrappers; offsetTop does not). */
+function getDocumentTop(el: HTMLElement) {
+  return el.getBoundingClientRect().top + window.scrollY;
+}
+
+/**
+ * Active = last section (in page order) whose start is at or above a marker line
+ * slightly below the top of the viewport — tracks scroll + Lenis smoothly.
+ */
+function computeActiveSectionId() {
+  const marker = window.scrollY + window.innerHeight * 0.32;
+  let active = sections[0].id;
+  for (const s of sections) {
+    const el = document.getElementById(s.id);
+    if (!el) continue;
+    if (getDocumentTop(el) <= marker) {
+      active = s.id;
+    }
+  }
+  return active;
+}
+
 export function Navigation() {
   const [activeSection, setActiveSection] = useState("hero");
   const [hovered, setHovered] = useState<string | null>(null);
+  const lenis = useLenis();
   const { scrollYProgress } = useScroll();
 
-  useMotionValueEvent(scrollYProgress, "change", () => {
-    const sectionEls = sections.map((s) => document.getElementById(s.id));
-    const scrollY = window.scrollY + window.innerHeight / 3;
-    for (let i = sectionEls.length - 1; i >= 0; i--) {
-      const el = sectionEls[i];
-      if (el && el.offsetTop <= scrollY) {
-        setActiveSection(sections[i].id);
-        break;
-      }
-    }
-  });
+  useEffect(() => {
+    const update = () => {
+      setActiveSection(computeActiveSectionId());
+    };
 
-  const scrollTo = useCallback((id: string) => {
-    document.getElementById(id)?.scrollIntoView({ behavior: "smooth" });
-  }, []);
+    update();
+
+    let unsubLenis: (() => void) | undefined;
+    if (lenis) {
+      unsubLenis = lenis.on("scroll", update);
+    }
+    window.addEventListener("scroll", update, { passive: true });
+    window.addEventListener("resize", update, { passive: true });
+
+    return () => {
+      unsubLenis?.();
+      window.removeEventListener("scroll", update);
+      window.removeEventListener("resize", update);
+    };
+  }, [lenis]);
+
+  const scrollTo = useCallback(
+    (id: string) => {
+      const el = document.getElementById(id);
+      if (!el) return;
+      // Lenis controls scroll — native scrollIntoView often won't move the page correctly
+      const isMobile = typeof window !== "undefined" && window.innerWidth < 1024;
+      const topBarOffset = isMobile ? -56 : 0;
+      if (lenis) {
+        lenis.scrollTo(el, { offset: topBarOffset, duration: 1.15 });
+      } else {
+        el.scrollIntoView({ behavior: "smooth", block: "start" });
+      }
+    },
+    [lenis],
+  );
 
   return (
     <>

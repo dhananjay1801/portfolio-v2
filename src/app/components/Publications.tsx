@@ -10,7 +10,7 @@ const publications = [
     date: "2025",
     abstract:
       "Research on Secure Shell (SSH) enhanced with AI/ML approaches for remote systems.",
-    preprintLink: "https://dhananjaytailor.in/Research_Paper.pdf",
+    preprintLink: "/Research_Paper.pdf",
     publishedLink: "https://www.ijsat.org/research-paper.php?id=8143",
   },
 ];
