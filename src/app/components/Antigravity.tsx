@@ -1,6 +1,6 @@
 /* eslint-disable react/no-unknown-property */
 import { Canvas, useFrame, useThree } from '@react-three/fiber';
-import { useMemo, useRef } from 'react';
+import { useEffect, useMemo, useRef } from 'react';
 import * as THREE from 'three';
 
 interface AntigravityInnerProps {
@@ -65,6 +65,16 @@ const AntigravityInner = ({
   const lastMouseMoveTime = useRef(0);
   const virtualMouse = useRef({ x: 0, y: 0 });
 
+  // Track raw client coords via window so mouse events aren't blocked by z-10 content layers
+  const rawMouseClient = useRef({ x: 0, y: 0 });
+  useEffect(() => {
+    const handler = (e: MouseEvent) => {
+      rawMouseClient.current = { x: e.clientX, y: e.clientY };
+    };
+    window.addEventListener('mousemove', handler);
+    return () => window.removeEventListener('mousemove', handler);
+  }, []);
+
   const particles = useMemo(() => {
     const temp: Particle[] = [];
     const width = viewport.width || 100;
@@ -99,19 +109,25 @@ const AntigravityInner = ({
     const mesh = meshRef.current;
     if (!mesh) return;
 
-    const { viewport: v, pointer: m } = state;
+    const { viewport: v } = state;
+
+    // Convert raw client coords → canvas NDC → world coords using the actual canvas
+    // rect so the mapping stays correct even though the canvas is oversized (-top-[300px]).
+    const rect = state.gl.domElement.getBoundingClientRect();
+    const ndcX = ((rawMouseClient.current.x - rect.left) / rect.width) * 2 - 1;
+    const ndcY = -((rawMouseClient.current.y - rect.top) / rect.height) * 2 + 1;
 
     const mouseDist = Math.sqrt(
-      Math.pow(m.x - lastMousePos.current.x, 2) + Math.pow(m.y - lastMousePos.current.y, 2)
+      Math.pow(ndcX - lastMousePos.current.x, 2) + Math.pow(ndcY - lastMousePos.current.y, 2)
     );
 
     if (mouseDist > 0.001) {
       lastMouseMoveTime.current = Date.now();
-      lastMousePos.current = { x: m.x, y: m.y };
+      lastMousePos.current = { x: ndcX, y: ndcY };
     }
 
-    let destX = (m.x * v.width) / 2;
-    let destY = (m.y * v.height) / 2;
+    let destX = (ndcX * v.width) / 2;
+    let destY = (ndcY * v.height) / 2;
 
     if (autoAnimate && Date.now() - lastMouseMoveTime.current > 2000) {
       const time = state.clock.getElapsedTime();

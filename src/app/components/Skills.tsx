@@ -39,7 +39,7 @@ const skillGroups = [
   {
     name: "Tools & Platforms",
     color: "#f472b6",
-    skills: ["Git", "GitHub", "Docker", "Google Colab", "AWS", "Postman", "Jenkins"],
+    skills: ["Git", "GitHub", "Docker", "Google Colab", "AWS", "Postman", "CI/CD","Jenkins"],
   },
   {
     name: "Databases",
