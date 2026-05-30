@@ -122,7 +122,7 @@ export function Education() {
                       Vadodara, Gujarat
                     </p>
                     <p className="text-white/50 text-[12px] tracking-[0.2em] uppercase font-[Space_Grotesk] mt-1">
-                      July 2022 – April 2026
+                      July 2022 – May 2026
                     </p>
                   </div>
 

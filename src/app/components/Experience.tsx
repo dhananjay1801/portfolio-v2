@@ -27,7 +27,7 @@ const experiences = [
   {
     title: "Software Developer Intern",
     company: "Allianz Cloud · Vadodara, Gujarat",
-    period: "Jan 2026 – Present",
+    period: "Jan 2026 – Apr 2026",
     summary: "Building cybersecurity platform features with modern technologies in a collaborative team environment.",
     highlights: [
       "Cybersecurity web work in Next.js, React, and Python.",

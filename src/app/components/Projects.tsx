@@ -12,84 +12,83 @@ const projects: {
   github: string;
   live?: string;
 }[] = [
-  {
-    title: "Nous",
-    description:
-      "AI-powered remote Windows command execution using RAG and LLM. Securely manage multiple systems via NLP.",
-    tags: ["Python", "C#", "MySQL", "SSL/TLS", "RAG", "Gemini"],
-    image:
-      "https://images.unsplash.com/photo-1629654297299-c8506221ca97?w=1080&q=80&auto=format&fit=crop",
-    github: "https://github.com/dhananjay1801/nous",
-  },
-  {
-    title: "SkillGapAI",
-    description:
-      "AI-powered resume analysis that uses NLP to identify skill gaps and match candidates to job requirements.",
-    tags: ["Python", "Streamlit", "NLP", "BERT", "Hugging Face"],
-    image:
-      "https://images.pexels.com/photos/669615/pexels-photo-669615.jpeg",
-    github: "https://github.com/dhananjay1801/SkillGapAI-Analyzing-Resume-and-Job-Post-for-Skill-Gap",
-    live: "https://dhananjay1801-skillgapai-analyzing-resume-and-job-p-home-ffmwhj.streamlit.app/",
-  },
-  {
-    title: "Get Me A Chai",
-    description:
-      "A Patreon-style platform for creators to receive direct support through custom profiles and Razorpay payment integration.",
-    tags: ["Next.js", "MongoDB", "NextAuth", "Razorpay", "Tailwind"],
-    image:
-      "https://images.unsplash.com/photo-1559526324-4b87b5e36e44?w=1080&q=80&auto=format&fit=crop",
-    github: "https://github.com/dhananjay1801/get-me-a-chai",
-    live: "https://get-me-a-chai-git.vercel.app/",
-  },
-  {
-    title: "Linkium",
-    description:
-      "A modern link-in-bio tool to organize and share all your important links through a single, custom URL.",
-    tags: ["Next.js", "MongoDB", "JWT", "Tailwind", "Nodemailer"],
-    image:
-      "https://images.squarespace-cdn.com/content/v1/5c27c93f1aef1d60b29781f9/1c63ca52-79ec-4937-9a40-2ab01e554a2b/blog-social-media-080320.jpg?format=2500w",
-    github: "https://github.com/dhananjay1801/linkium",
-    live: "https://linkium.dhananjaytailor.in/",
-  },
-  {
-    title: "YouTube Max Quality",
-    description:
-      "Chrome extension that auto-selects the highest YouTube quality and respects manual picks with a simple popup toggle.",
-    tags: ["JavaScript", "Chrome API", "HTML", "CSS"],
-    image:
-      "https://wallpapers.com/images/featured/youtube-background-34ycn949dz42yg4c.webp",
-    github: "https://github.com/dhananjay1801/youtube-max-quality",
-  },
-  {
-    title: "Code Studio",
-    description:
-      "Judge0 powered multi-language Web IDE with real-time compilation, output terminal and syntax highlighting.",
-    tags: ["React", "TypeScript", "Vite", "Judge0", "Tailwind"],
-    image:
-      "https://static.vecteezy.com/system/resources/thumbnails/051/261/577/small/person-coding-on-a-laptop-with-vibrant-programming-code-on-the-screen-photo.jpeg",
-    github: "https://github.com/dhananjay1801/code-studio",
-    live: "https://code-studio-iota.vercel.app/",
-  },
-  {
-    title: "BitLinks",
-    description:
-      "Registration-free URL shortener with custom short links and fast redirects.",
-    tags: ["Next.js", "MongoDB", "Tailwind"],
-    image:
-      "https://d3gribjq2zt3oj.cloudfront.net/blog-hub/wp-content/uploads/2022/02/Shortlinks_blog_social-sharing_1200x630.png",
-    github: "https://github.com/dhananjay1801/bit-links",
-    live: "https://bitlinksurl.vercel.app/",
-  },
-  {
-    title: "More on GitHub",
-    description:
-      "Explore more repositories, experiments, and open-source work. Find additional projects and ideas on my GitHub profile.",
-    tags: ["Open Source", "Repositories", "GitHub"],
-    image:
-      "https://images.unsplash.com/photo-1618401471353-b98afee0b2eb?w=1080&q=80&auto=format&fit=crop",
-    github: "https://github.com/dhananjay1801",
-  },
-];
+    {
+      title: "Nous",
+      description:
+        "AI-powered remote Windows command execution using RAG and LLM. Securely manage multiple systems via NLP.",
+      tags: ["Python", "C#", "MySQL", "SSL/TLS", "RAG", "Gemini"],
+      image:
+        "https://images.unsplash.com/photo-1629654297299-c8506221ca97?w=1080&q=80&auto=format&fit=crop",
+      github: "https://github.com/dhananjay1801/nous",
+    },
+    {
+      title: "SkillGapAI",
+      description:
+        "AI-powered resume analysis that uses NLP to identify skill gaps and match candidates to job requirements.",
+      tags: ["Python", "Streamlit", "NLP", "BERT", "Hugging Face"],
+      image:
+        "https://images.pexels.com/photos/669615/pexels-photo-669615.jpeg",
+      github: "https://github.com/dhananjay1801/SkillGapAI-Analyzing-Resume-and-Job-Post-for-Skill-Gap",
+      live: "https://dhananjay1801-skillgapai-analyzing-resume-and-job-p-home-ffmwhj.streamlit.app/",
+    },
+    {
+      title: "Get Me A Chai",
+      description:
+        "A Patreon-style platform for creators to receive direct support through custom profiles and Razorpay payment integration.",
+      tags: ["Next.js", "MongoDB", "NextAuth", "Razorpay", "Tailwind"],
+      image:
+        "https://images.unsplash.com/photo-1559526324-4b87b5e36e44?w=1080&q=80&auto=format&fit=crop",
+      github: "https://github.com/dhananjay1801/get-me-a-chai",
+      live: "https://get-me-a-chai-git.vercel.app/",
+    },
+    {
+      title: "AI Travel Itinerary",
+      description:
+        "AI travel planner powered by Gemini AI, generates personalized itineraries based on travel docs uploaded with PDF export.",
+      tags: ["Next.js", "TypeScript", "Render", "Gemini AI", "AWS S3"],
+      image:
+        "https://images.unsplash.com/photo-1488646953014-85cb44e25828?w=1080&q=80&auto=format&fit=crop",
+      github: "https://github.com/dhananjay1801/ai-powered-itinerary",
+    },
+    {
+      title: "Linkium",
+      description:
+        "A modern link-in-bio tool to organize and share all your important links through a single, custom URL.",
+      tags: ["Next.js", "MongoDB", "JWT", "Tailwind", "Nodemailer"],
+      image:
+        "https://images.squarespace-cdn.com/content/v1/5c27c93f1aef1d60b29781f9/1c63ca52-79ec-4937-9a40-2ab01e554a2b/blog-social-media-080320.jpg?format=2500w",
+      github: "https://github.com/dhananjay1801/linkium",
+      live: "https://linkium.dhananjaytailor.in/",
+    },
+    {
+      title: "YouTube Max Quality",
+      description:
+        "Chrome extension that auto-selects the highest YouTube quality and respects manual picks with a simple popup toggle.",
+      tags: ["JavaScript", "Chrome API", "HTML", "CSS"],
+      image:
+        "https://wallpapers.com/images/featured/youtube-background-34ycn949dz42yg4c.webp",
+      github: "https://github.com/dhananjay1801/youtube-max-quality",
+    },
+    {
+      title: "BitLinks",
+      description:
+        "Registration-free URL shortener with custom short links and fast redirects.",
+      tags: ["Next.js", "MongoDB", "Tailwind"],
+      image:
+        "https://d3gribjq2zt3oj.cloudfront.net/blog-hub/wp-content/uploads/2022/02/Shortlinks_blog_social-sharing_1200x630.png",
+      github: "https://github.com/dhananjay1801/bit-links",
+      live: "https://bitlinksurl.vercel.app/",
+    },
+    {
+      title: "More on GitHub",
+      description:
+        "Explore more repositories, experiments, and open-source work. Find additional projects and ideas on my GitHub profile.",
+      tags: ["Open Source", "Repositories", "GitHub"],
+      image:
+        "https://images.unsplash.com/photo-1618401471353-b98afee0b2eb?w=1080&q=80&auto=format&fit=crop",
+      github: "https://github.com/dhananjay1801",
+    },
+  ];
 
 export function Projects() {
   const containerRef = useRef(null);
